@@ -17,14 +17,17 @@ limitations under the License.
 package main
 
 import (
+	"context"
 	"crypto/tls"
 	"flag"
 	"os"
 
 	// Import all Kubernetes client auth plugins (e.g. Azure, GCP, OIDC, etc.)
 	// to ensure that exec-entrypoint and run can make use of them.
+
 	_ "k8s.io/client-go/plugin/pkg/client/auth"
 
+	"github.com/edgedb/edgedb-go"
 	policyAPI "github.com/giantswarm/policy-api/api/v1alpha1"
 	"k8s.io/apimachinery/pkg/runtime"
 	utilruntime "k8s.io/apimachinery/pkg/util/runtime"
@@ -36,6 +39,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/webhook"
 
 	"github.com/giantswarm/policy-meta-operator/internal/controller"
+	"github.com/giantswarm/policy-meta-operator/internal/utils"
 	//+kubebuilder:scaffold:imports
 )
 
@@ -49,6 +53,23 @@ func init() {
 	utilruntime.Must(policyAPI.AddToScheme(scheme))
 
 	//+kubebuilder:scaffold:scheme
+
+	// Initialize DB schema
+	var ctx context.Context
+	client := utils.GetEDGEDBClient(ctx, edgedb.Options{})
+	defer client.Close()
+
+	// Create AutomatedException Type
+	_, err := utils.SetupAutomatedExceptionType(ctx, client)
+	if err != nil {
+		setupLog.Info("Error creating AutomatedException type, probably already exists")
+	}
+
+	// Create PolicyException Type
+	_, err = utils.SetupPolicyExceptionType(ctx, client)
+	if err != nil {
+		setupLog.Info("Error creating PolicyException type, probably already exists")
+	}
 }
 
 func main() {

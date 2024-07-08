@@ -22,6 +22,9 @@ type AutomatedException struct {
 //go:embed setupAutomatedExceptionType.edgeql
 var setupAutomatedExceptionTypeQuery string
 
+//go:embed setupAutomatedExceptionType.edgeql
+var setupPolicyExceptionTypeQuery string
+
 //go:embed insertAutomatedException.edgeql
 var insertAutomatedExceptionQuery string
 
@@ -40,6 +43,18 @@ func SetupAutomatedExceptionType(ctx context.Context, client *edgedb.Client) (ed
 	err := client.QuerySingle(
 		ctx,
 		setupAutomatedExceptionTypeQuery,
+		&result,
+	)
+
+	return result, err
+}
+
+func SetupPolicyExceptionType(ctx context.Context, client *edgedb.Client) (edgedb.Optional, error) {
+	var result edgedb.Optional
+
+	err := client.QuerySingle(
+		ctx,
+		setupPolicyExceptionTypeQuery,
 		&result,
 	)
 

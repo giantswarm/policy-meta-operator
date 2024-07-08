@@ -1,0 +1,8 @@
+name: policy-meta-operator
+serviceType: managed
+
+image:
+  registry: gsoci.azurecr.io
+  name: giantswarm/policy-meta-operator
+  tag: v0.0.1
+  pullPolicy: IfNotPresent
