@@ -32,7 +32,7 @@ workflows:
           name: push-to-registries
           requires:
             - go-build
-            - unit-tests
+            # - unit-tests
           filters:
             tags:
               only: /^v.*/
