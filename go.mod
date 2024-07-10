@@ -5,7 +5,7 @@ go 1.21.4
 toolchain go1.22.1
 
 require (
-	github.com/edgedb/edgedb-go v0.17.1
+	github.com/edgedb/edgedb-go v0.17.2
 	github.com/giantswarm/policy-api v0.0.0-20240425141349-58e378f7f59f
 	github.com/onsi/ginkgo/v2 v2.15.0
 	github.com/onsi/gomega v1.32.0
