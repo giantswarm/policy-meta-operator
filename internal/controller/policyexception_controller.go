@@ -25,11 +25,12 @@ import (
 	"github.com/edgedb/edgedb-go"
 
 	policyAPI "github.com/giantswarm/policy-api/api/v1alpha1"
-	"github.com/giantswarm/policy-meta-operator/internal/utils"
 	"k8s.io/apimachinery/pkg/runtime"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/log"
+
+	"github.com/giantswarm/policy-meta-operator/internal/utils"
 )
 
 // PolicyExceptionReconciler reconciles a AutomatedException object
@@ -43,7 +44,8 @@ func (r *PolicyExceptionReconciler) Reconcile(ctx context.Context, req ctrl.Requ
 
 	log.Log.Info("Reconciling AutomatedException")
 	client := utils.GetEDGEDBClient(ctx, edgedb.Options{})
-	defer client.Close()
+
+	defer utils.CloseClient(client)
 
 	// Create Exception Type
 	_, err := utils.SetupAutomatedExceptionType(ctx, client)

@@ -57,7 +57,8 @@ func init() {
 	// Initialize DB schema
 	var ctx context.Context
 	client := utils.GetEDGEDBClient(ctx, edgedb.Options{})
-	defer client.Close()
+
+	defer utils.CloseClient(client)
 
 	// Create AutomatedException Type
 	_, err := utils.SetupAutomatedExceptionType(ctx, client)

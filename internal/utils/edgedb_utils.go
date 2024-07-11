@@ -37,6 +37,13 @@ func GetEDGEDBClient(ctx context.Context, opts edgedb.Options) *edgedb.Client {
 	return client
 }
 
+func CloseClient(client *edgedb.Client) {
+	err := client.Close()
+	if err != nil {
+		log.Log.Error(err, "Error closing edgedb client")
+	}
+}
+
 func SetupAutomatedExceptionType(ctx context.Context, client *edgedb.Client) (edgedb.Optional, error) {
 	var result edgedb.Optional
 
