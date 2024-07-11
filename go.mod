@@ -7,6 +7,7 @@ toolchain go1.22.1
 require (
 	github.com/edgedb/edgedb-go v0.17.1
 	github.com/giantswarm/policy-api v0.0.0-20240425141349-58e378f7f59f
+	github.com/google/uuid v1.5.0
 	github.com/onsi/ginkgo/v2 v2.15.0
 	github.com/onsi/gomega v1.32.0
 	k8s.io/apimachinery v0.29.2
@@ -35,7 +36,6 @@ require (
 	github.com/google/go-cmp v0.6.0 // indirect
 	github.com/google/gofuzz v1.2.0 // indirect
 	github.com/google/pprof v0.0.0-20210720184732-4bb14d4b1be1 // indirect
-	github.com/google/uuid v1.5.0 // indirect
 	github.com/imdario/mergo v0.3.16 // indirect
 	github.com/josharian/intern v1.0.0 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
