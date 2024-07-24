@@ -6,7 +6,7 @@ metadata:
   labels:
     {{- include "labels.common" . | nindent 4 }}
 spec:
-  replicas: {{ .Values.replicas }}
+  replicas: {{ default "1" .Values.replicas }}
   selector:
     matchLabels:
       {{- include "labels.selector" . | nindent 6 }}
@@ -59,11 +59,11 @@ spec:
         image: "{{ default .Values.image.registry (include "global.imageRegistry" . ) }}/{{ .Values.image.name }}:{{ .Values.image.tag | default .Chart.Version }}"
         env:
         - name: EDGEDB_HOST
-          value: {{ .Values.edgedb.host }}
+          value: {{ .Values.edgedb.host | quote }}
         - name: EDGEDB_PORT
-          value: {{ .Values.edgedb.port }}
+          value: {{ .Values.edgedb.port | quote }}
         - name: EDGEDB_USER
-          value: {{ .Values.edgedb.user }}
+          value: {{ .Values.edgedb.user | quote }}
         - name: EDGEDB_PASSWORD
           valueFrom:
            secretKeyRef:
@@ -83,7 +83,7 @@ spec:
           timeoutSeconds: 1
         resources:
 {{ toYaml .Values.resources | indent 10 }}
-        {{- with .Values.securityContext }}
+        {{- with .Values.containerSecurityContext }}
         securityContext:
           {{- . | toYaml | nindent 10 }}
         {{- end }}
