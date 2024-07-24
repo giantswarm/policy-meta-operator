@@ -7,8 +7,8 @@ description: Policy Meta Operator Helm chart for Giant Swarm
 
 home: https://github.com/giantswarm/policy-meta-operator
 
-icon: https://s.giantswarm.io/app-icons/example/1/light.svg
+icon: https://s.giantswarm.io/app-icons/giantswarm/1/light.svg
 
-version: 0.0.0-dev 
+version: 0.0.0-dev
 annotations:
   application.giantswarm.io/team: shield

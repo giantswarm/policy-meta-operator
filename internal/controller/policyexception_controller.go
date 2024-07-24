@@ -36,25 +36,17 @@ import (
 // PolicyExceptionReconciler reconciles a AutomatedException object
 type PolicyExceptionReconciler struct {
 	client.Client
-	Scheme *runtime.Scheme
+	EdgeDBClient *edgedb.Client
+	Scheme       *runtime.Scheme
 }
 
 func (r *PolicyExceptionReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
 	_ = log.FromContext(ctx)
 
 	log.Log.Info("Reconciling AutomatedException")
-	client := utils.GetEDGEDBClient(ctx, edgedb.Options{})
-
-	defer utils.CloseClient(client)
-
-	// Create Exception Type
-	_, err := utils.SetupAutomatedExceptionType(ctx, client)
-	if err != nil {
-		log.Log.Info("Error creating exception type, probably already exists")
-	}
 
 	// Create exception with counter
-	_, err = utils.InsertAutomatedException(ctx, client, req.Name, int64(1), time.Now())
+	_, err := utils.InsertAutomatedException(ctx, r.EdgeDBClient, req.Name, int64(1), time.Now())
 	if err != nil {
 		log.Log.Error(err, "Error inserting exception in database")
 	}
@@ -62,7 +54,7 @@ func (r *PolicyExceptionReconciler) Reconcile(ctx context.Context, req ctrl.Requ
 	// Select users.
 	var automatedExceptions []utils.AutomatedException
 	query := "select AutomatedException{name, last_reconciliation, counter}"
-	err = client.Query(ctx, query, &automatedExceptions)
+	err = r.EdgeDBClient.Query(ctx, query, &automatedExceptions)
 	if err != nil {
 		log.Log.Error(err, "error making query")
 	}
@@ -79,6 +71,6 @@ func (r *PolicyExceptionReconciler) Reconcile(ctx context.Context, req ctrl.Requ
 // SetupWithManager sets up the controller with the Manager.
 func (r *PolicyExceptionReconciler) SetupWithManager(mgr ctrl.Manager) error {
 	return ctrl.NewControllerManagedBy(mgr).
-		For(&policyAPI.AutomatedException{}).
+		For(&policyAPI.PolicyException{}).
 		Complete(r)
 }

@@ -1,8 +1,49 @@
 name: policy-meta-operator
 serviceType: managed
 
+global:
+  image:
+    registry: "gsoci.azurecr.io"
+
+# Pod securityContext
+podSecurityContext:
+  runAsUser: 1000
+  runAsGroup: 1000
+  runAsNonRoot: true
+  seccompProfile:
+    type: RuntimeDefault
+
+# Container securityContext
+containerSecurityContext:
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop:
+      - ALL
+  privileged: false
+  readOnlyRootFilesystem: true
+  runAsNonRoot: true
+  seccompProfile:
+    type: RuntimeDefault
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 220Mi
+  limits:
+    cpu: 100m
+    memory: 220Mi
+
 image:
   registry: gsoci.azurecr.io
   name: giantswarm/policy-meta-operator
   tag: v0.0.1
   pullPolicy: IfNotPresent
+
+edgedb:
+  host: edgedb
+  port: 5656
+  user: edgedb
+  passwordSecret:
+    name: edgedb-server-password
+  tlsSecret:
+    name: edgedb-tls
