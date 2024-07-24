@@ -78,14 +78,6 @@
                             "type": "string"
                         }
                     }
-                },
-                "podSecurityStandards": {
-                    "type": "object",
-                    "properties": {
-                        "enforced": {
-                            "type": "boolean"
-                        }
-                    }
                 }
             }
         },
@@ -112,9 +104,6 @@
         "podSecurityContext": {
             "type": "object",
             "properties": {
-                "readOnlyRootFilesystem": {
-                    "type": "boolean"
-                },
                 "runAsGroup": {
                     "type": "integer"
                 },

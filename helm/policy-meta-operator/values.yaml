@@ -4,8 +4,6 @@ serviceType: managed
 global:
   image:
     registry: "gsoci.azurecr.io"
-  podSecurityStandards:
-    enforced: true
 
 # Pod securityContext
 podSecurityContext:
