@@ -68,8 +68,6 @@ spec:
           value: {{ .Values.edgedb.port | quote }}
         - name: EDGEDB_USER
           value: {{ .Values.edgedb.user | quote }}
-        - name: EDGEDB_PASSWORD_FILE
-          value: "/etc/edgedb/password"
         - name: EDGEDB_TLS_CA_FILE
           value: "/etc/edgedb/ca.crt"
         ports:
