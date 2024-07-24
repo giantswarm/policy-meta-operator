@@ -6,3 +6,12 @@ image:
   name: giantswarm/policy-meta-operator
   tag: v0.0.1
   pullPolicy: IfNotPresent
+
+edgedb:
+  host: edgedb
+  port: 5656
+  user: edgedb
+  passwordSecret:
+    name: edgedb-serverpassword
+  tlsSecret:
+    name: edgedb-server-tls
