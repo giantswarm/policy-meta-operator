@@ -70,7 +70,7 @@ spec:
               name: {{ .Values.edgedb.passwordSecret.name }}
               key: password
         - name: EDGEDB_TLS_CA_FILE
-          value: "/etc/edgedb/tls-ca.crt"
+          value: "/etc/edgedb/ca.crt"
         ports:
         - containerPort: 8080
           name: metrics
@@ -90,4 +90,4 @@ spec:
         volumeMounts:
         - name: edgedb-tls
           readOnly: true
-          mountPath: "/etc/edgedb/tls-ca.crt"
+          mountPath: "/etc/edgedb/"

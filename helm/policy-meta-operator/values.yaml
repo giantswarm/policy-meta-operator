@@ -12,7 +12,6 @@ podSecurityContext:
   runAsUser: 1000
   runAsGroup: 1000
   runAsNonRoot: true
-  readOnlyRootFilesystem: true
   seccompProfile:
     type: RuntimeDefault
 
@@ -47,6 +46,6 @@ edgedb:
   port: 5656
   user: edgedb
   passwordSecret:
-    name: edgedb-serverpassword
+    name: edgedb-server-password
   tlsSecret:
-    name: edgedb-server-tls
+    name: edgedb-tls
