@@ -9,7 +9,7 @@ import (
 )
 
 const (
-	EDGEDB_DSN = "edgedb://?password_env=EDGEDB_PASSWORD&tls_ca_file_env=EDGEDB_TLS_CA_FILE&user_env=EDGEDB_USER&host_env=EDGEDB_HOST&port_env=EDGEDB_PORT"
+	EDGEDB_DSN = "edgedb://?password_file=EDGEDB_PASSWORD_FILE&tls_ca_file_env=EDGEDB_TLS_CA_FILE&user_env=EDGEDB_USER&host_env=EDGEDB_HOST&port_env=EDGEDB_PORT"
 )
 
 type AutomatedException struct {

@@ -51,9 +51,13 @@ spec:
           {{- toYaml . | nindent 8 }}
       {{- end }}
       volumes:
-        - name: edgedb-tls
-          secret:
-            secretName: {{ .Values.edgedb.tlsSecret.name }}
+        - name: edgedb-secrets
+          projected:
+            sources:
+            - secret:
+                name: {{ .Values.edgedb.tlsSecret.name }}
+            - secret:
+                name: {{ .Values.edgedb.passwordSecret.name }}
       containers:
       - name: {{ include "resource.default.name" . }}
         image: "{{ default .Values.image.registry (include "global.imageRegistry" . ) }}/{{ .Values.image.name }}:{{ .Chart.Version }}"
@@ -64,11 +68,8 @@ spec:
           value: {{ .Values.edgedb.port | quote }}
         - name: EDGEDB_USER
           value: {{ .Values.edgedb.user | quote }}
-        - name: EDGEDB_PASSWORD
-          valueFrom:
-           secretKeyRef:
-              name: {{ .Values.edgedb.passwordSecret.name }}
-              key: password
+        - name: EDGEDB_PASSWORD_FILE
+          value: "/etc/edgedb/password"
         - name: EDGEDB_TLS_CA_FILE
           value: "/etc/edgedb/ca.crt"
         ports:
@@ -88,6 +89,6 @@ spec:
           {{- . | toYaml | nindent 10 }}
         {{- end }}
         volumeMounts:
-        - name: edgedb-tls
+        - name: edgedb-secrets
           readOnly: true
           mountPath: "/etc/edgedb/"
