@@ -53,24 +53,31 @@ func init() {
 	utilruntime.Must(policyAPI.AddToScheme(scheme))
 
 	//+kubebuilder:scaffold:scheme
+}
 
-	// Initialize DB schema
-	var ctx context.Context
-	client := utils.GetEDGEDBClient(ctx, edgedb.Options{})
+func initEdgeDB() *edgedb.Client {
+	// Initialize schemas
+	setupLog.Info("Setting up EdgeDB schemas")
+	var ctx = context.Background()
+	edgedbClient := utils.GetEDGEDBClient(ctx, edgedb.Options{})
 
-	defer utils.CloseClient(client)
-
+	err := edgedbClient.EnsureConnected(ctx)
+	if err != nil {
+		setupLog.Error(err, "Error connecting to edgedb")
+	}
 	// Create AutomatedException Type
-	_, err := utils.SetupAutomatedExceptionType(ctx, client)
+	_, err = utils.SetupAutomatedExceptionType(ctx, edgedbClient)
 	if err != nil {
 		setupLog.Info("Error creating AutomatedException type, probably already exists")
 	}
 
 	// Create PolicyException Type
-	_, err = utils.SetupPolicyExceptionType(ctx, client)
+	_, err = utils.SetupPolicyExceptionType(ctx, edgedbClient)
 	if err != nil {
 		setupLog.Info("Error creating PolicyException type, probably already exists")
 	}
+
+	return edgedbClient
 }
 
 func main() {
@@ -79,6 +86,8 @@ func main() {
 	var probeAddr string
 	var secureMetrics bool
 	var enableHTTP2 bool
+	// var ctx context.Context
+	// edgedbClient := utils.GetEDGEDBClient(ctx, edgedb.Options{})
 	flag.StringVar(&metricsAddr, "metrics-bind-address", ":8080", "The address the metric endpoint binds to.")
 	flag.StringVar(&probeAddr, "health-probe-bind-address", ":8081", "The address the probe endpoint binds to.")
 	flag.BoolVar(&enableLeaderElection, "leader-elect", false,
@@ -116,6 +125,8 @@ func main() {
 		TLSOpts: tlsOpts,
 	})
 
+	edgedbClient := initEdgeDB()
+
 	mgr, err := ctrl.NewManager(ctrl.GetConfigOrDie(), ctrl.Options{
 		Scheme: scheme,
 		Metrics: metricsserver.Options{
@@ -145,10 +156,20 @@ func main() {
 	}
 
 	if err = (&controller.AutomatedExceptionReconciler{
-		Client: mgr.GetClient(),
-		Scheme: mgr.GetScheme(),
+		Client:       mgr.GetClient(),
+		EdgeDBClient: edgedbClient,
+		Scheme:       mgr.GetScheme(),
 	}).SetupWithManager(mgr); err != nil {
 		setupLog.Error(err, "unable to create controller", "controller", "AutomatedException")
+		os.Exit(1)
+	}
+
+	if err = (&controller.PolicyExceptionReconciler{
+		Client:       mgr.GetClient(),
+		EdgeDBClient: edgedbClient,
+		Scheme:       mgr.GetScheme(),
+	}).SetupWithManager(mgr); err != nil {
+		setupLog.Error(err, "unable to create controller", "controller", "PolicyException")
 		os.Exit(1)
 	}
 	//+kubebuilder:scaffold:builder
