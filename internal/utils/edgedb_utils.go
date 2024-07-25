@@ -3,7 +3,6 @@ package utils
 import (
 	"context"
 	_ "embed"
-	"fmt"
 
 	"github.com/edgedb/edgedb-go"
 	"sigs.k8s.io/controller-runtime/pkg/log"
@@ -105,15 +104,14 @@ func InsertPolicyException(ctx context.Context, client *edgedb.Client, args ...i
 	return result, err
 }
 
-func GetPolicyExceptionsFromEdgeDB(ctx context.Context, client *edgedb.Client) {
+func GetPolicyExceptionsFromEdgeDB(ctx context.Context, client *edgedb.Client) []PolicyException {
 	// Select users.
 	var output []PolicyException
-	args := map[string]interface{}{"name": "my-deployment-exception"}
-	query := "SELECT PolicyException {name, counter, last_reconciliation} FILTER .name = <str>$name"
-	err := client.Query(ctx, query, &output, args)
-
-	fmt.Println(output)
+	query := "SELECT PolicyException {name, counter, last_reconciliation}"
+	err := client.Query(ctx, query, &output)
 	if err != nil {
 		log.Log.Error(err, "Error querying for PolicyException")
 	}
+
+	return output
 }

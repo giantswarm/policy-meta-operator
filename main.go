@@ -69,15 +69,14 @@ func initEdgeDB() *edgedb.Client {
 	// Create AutomatedException Type
 	_, err = utils.SetupAutomatedExceptionType(ctx, edgedbClient)
 	if err != nil {
-		setupLog.Info("Error creating AutomatedException type, probably already exists")
-		fmt.Printf("Error creating AutomatedException type: %v\n", err)
+		setupLog.Info(fmt.Sprintf("Error creating AutomatedException type, probably already exists\n error: %v", err))
+
 	}
 
 	// Create PolicyException Type
 	_, err = utils.SetupPolicyExceptionType(ctx, edgedbClient)
 	if err != nil {
-		setupLog.Info("Error creating PolicyException type, probably already exists")
-		fmt.Printf("Error creating PolicyException type: %v\n", err)
+		setupLog.Info(fmt.Sprintf("Error creating PolicyException type, probably already exists\n error: %v", err))
 	}
 
 	return edgedbClient

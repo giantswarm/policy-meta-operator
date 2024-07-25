@@ -18,6 +18,7 @@ package controller
 
 import (
 	"context"
+	"fmt"
 	"time"
 
 	"github.com/edgedb/edgedb-go"
@@ -50,7 +51,11 @@ func (r *PolicyExceptionReconciler) Reconcile(ctx context.Context, req ctrl.Requ
 	}
 
 	// Select PolicyExceptions
-	utils.GetPolicyExceptionsFromEdgeDB(ctx, r.EdgeDBClient)
+	policyExceptions := utils.GetPolicyExceptionsFromEdgeDB(ctx, r.EdgeDBClient)
+
+	for _, policyException := range policyExceptions {
+		log.Log.Info(fmt.Sprintf("PolicyException: %s, Counter: %d", policyException.Name, policyException.Counter))
+	}
 
 	return ctrl.Result{}, nil
 }
