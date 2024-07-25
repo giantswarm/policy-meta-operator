@@ -18,8 +18,6 @@ package controller
 
 import (
 	"context"
-	"fmt"
-	"strconv"
 	"time"
 
 	"github.com/edgedb/edgedb-go"
@@ -43,27 +41,16 @@ type PolicyExceptionReconciler struct {
 func (r *PolicyExceptionReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
 	_ = log.FromContext(ctx)
 
-	log.Log.Info("Reconciling AutomatedException")
+	log.Log.Info("Reconciling PolicyException")
 
 	// Create exception with counter
-	_, err := utils.InsertAutomatedException(ctx, r.EdgeDBClient, req.Name, int64(1), time.Now())
+	_, err := utils.InsertPolicyException(ctx, r.EdgeDBClient, req.Name, int64(1), time.Now())
 	if err != nil {
-		log.Log.Error(err, "Error inserting exception in database")
+		log.Log.Error(err, "Error inserting policy exception in database")
 	}
 
-	// Select users.
-	var automatedExceptions []utils.AutomatedException
-	query := "select AutomatedException{name, last_reconciliation, counter}"
-	err = r.EdgeDBClient.Query(ctx, query, &automatedExceptions)
-	if err != nil {
-		log.Log.Error(err, "error making query")
-	}
-
-	for _, exception := range automatedExceptions {
-		time, _ := exception.LastReconciliation.Get()
-		counter, _ := exception.Counter.Get()
-		log.Log.Info(fmt.Sprintf("Exception: %s\nLast reconciliation: %s\nCounter: %s", exception.Name, time, strconv.FormatInt(counter, 10)))
-	}
+	// Select PolicyExceptions
+	utils.GetPolicyExceptionsFromEdgeDB(ctx, r.EdgeDBClient)
 
 	return ctrl.Result{}, nil
 }

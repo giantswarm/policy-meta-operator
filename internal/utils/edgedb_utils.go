@@ -3,6 +3,7 @@ package utils
 import (
 	"context"
 	_ "embed"
+	"fmt"
 
 	"github.com/edgedb/edgedb-go"
 	"sigs.k8s.io/controller-runtime/pkg/log"
@@ -13,6 +14,13 @@ const (
 )
 
 type AutomatedException struct {
+	ID                 edgedb.UUID             `edgedb:"id"`
+	Name               string                  `edgedb:"name"`
+	LastReconciliation edgedb.OptionalDateTime `edgedb:"last_reconciliation"`
+	Counter            edgedb.OptionalInt64    `edgedb:"counter"`
+}
+
+type PolicyException struct {
 	ID                 edgedb.UUID             `edgedb:"id"`
 	Name               string                  `edgedb:"name"`
 	LastReconciliation edgedb.OptionalDateTime `edgedb:"last_reconciliation"`
@@ -79,4 +87,30 @@ func InsertAutomatedException(ctx context.Context, client *edgedb.Client, args .
 	)
 
 	return result, err
+}
+
+func InsertPolicyException(ctx context.Context, client *edgedb.Client, args ...interface{}) (PolicyException, error) {
+	var result PolicyException
+
+	err := client.QuerySingle(
+		ctx,
+		insertAutomatedExceptionQuery,
+		&result,
+		args...,
+	)
+
+	return result, err
+}
+
+func GetPolicyExceptionsFromEdgeDB(ctx context.Context, client *edgedb.Client) {
+	// Select users.
+	var output []PolicyException
+	args := map[string]interface{}{"name": "my-deployment-exception"}
+	query := "SELECT PolicyException {name, counter, last_reconciliation} FILTER .name = <str>$name"
+	err := client.Query(ctx, query, &output, args)
+
+	fmt.Println(output)
+	if err != nil {
+		log.Log.Error(err, "Error querying for PolicyException")
+	}
 }
