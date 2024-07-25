@@ -36,6 +36,9 @@ var setupPolicyExceptionTypeQuery string
 //go:embed insertAutomatedException.edgeql
 var insertAutomatedExceptionQuery string
 
+//go:embed insertPolicyException.edgeql
+var insertPolicyExceptionQuery string
+
 func GetEDGEDBClient(ctx context.Context, opts edgedb.Options) *edgedb.Client {
 	_ = log.FromContext(ctx)
 	client, err := edgedb.CreateClientDSN(ctx, EDGEDB_DSN, opts)
@@ -94,7 +97,7 @@ func InsertPolicyException(ctx context.Context, client *edgedb.Client, args ...i
 
 	err := client.QuerySingle(
 		ctx,
-		insertAutomatedExceptionQuery,
+		insertPolicyExceptionQuery,
 		&result,
 		args...,
 	)
