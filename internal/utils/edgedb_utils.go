@@ -30,7 +30,7 @@ type PolicyException struct {
 //go:embed setupAutomatedExceptionType.edgeql
 var setupAutomatedExceptionTypeQuery string
 
-//go:embed setupAutomatedExceptionType.edgeql
+//go:embed setupPolicyExceptionType.edgeql
 var setupPolicyExceptionTypeQuery string
 
 //go:embed insertAutomatedException.edgeql
