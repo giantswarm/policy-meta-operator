@@ -54,7 +54,12 @@ func (r *PolicyExceptionReconciler) Reconcile(ctx context.Context, req ctrl.Requ
 	policyExceptions := utils.GetPolicyExceptionsFromEdgeDB(ctx, r.EdgeDBClient)
 
 	for _, policyException := range policyExceptions {
-		log.Log.Info(fmt.Sprintf("PolicyException: %s, Counter: %d", policyException.Name, policyException.Counter))
+		// Convert OptionalInt64 to Int64
+		counter, _ := policyException.Counter.Get()
+		// Convert OptionalDateTime to time.Time
+		lastReconciliation, _ := policyException.LastReconciliation.Get()
+		// Print PolicyException
+		log.Log.Info(fmt.Sprintf("PolicyException: %s, Counter: %d, Reconciliation time: %v", policyException.Name, counter, lastReconciliation))
 	}
 
 	return ctrl.Result{}, nil
