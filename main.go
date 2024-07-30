@@ -20,6 +20,7 @@ import (
 	"context"
 	"crypto/tls"
 	"flag"
+	"fmt"
 	"os"
 
 	// Import all Kubernetes client auth plugins (e.g. Azure, GCP, OIDC, etc.)
@@ -68,13 +69,14 @@ func initEdgeDB() *edgedb.Client {
 	// Create AutomatedException Type
 	_, err = utils.SetupAutomatedExceptionType(ctx, edgedbClient)
 	if err != nil {
-		setupLog.Info("Error creating AutomatedException type, probably already exists")
+		setupLog.Info(fmt.Sprintf("Error creating AutomatedException type, probably already exists\n error: %v", err))
+
 	}
 
 	// Create PolicyException Type
 	_, err = utils.SetupPolicyExceptionType(ctx, edgedbClient)
 	if err != nil {
-		setupLog.Info("Error creating PolicyException type, probably already exists")
+		setupLog.Info(fmt.Sprintf("Error creating PolicyException type, probably already exists\n error: %v", err))
 	}
 
 	return edgedbClient

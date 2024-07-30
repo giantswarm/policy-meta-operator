@@ -19,14 +19,24 @@ type AutomatedException struct {
 	Counter            edgedb.OptionalInt64    `edgedb:"counter"`
 }
 
+type PolicyException struct {
+	ID                 edgedb.UUID             `edgedb:"id"`
+	Name               string                  `edgedb:"name"`
+	LastReconciliation edgedb.OptionalDateTime `edgedb:"last_reconciliation"`
+	Counter            edgedb.OptionalInt64    `edgedb:"counter"`
+}
+
 //go:embed setupAutomatedExceptionType.edgeql
 var setupAutomatedExceptionTypeQuery string
 
-//go:embed setupAutomatedExceptionType.edgeql
+//go:embed setupPolicyExceptionType.edgeql
 var setupPolicyExceptionTypeQuery string
 
 //go:embed insertAutomatedException.edgeql
 var insertAutomatedExceptionQuery string
+
+//go:embed insertPolicyException.edgeql
+var insertPolicyExceptionQuery string
 
 func GetEDGEDBClient(ctx context.Context, opts edgedb.Options) *edgedb.Client {
 	_ = log.FromContext(ctx)
@@ -79,4 +89,29 @@ func InsertAutomatedException(ctx context.Context, client *edgedb.Client, args .
 	)
 
 	return result, err
+}
+
+func InsertPolicyException(ctx context.Context, client *edgedb.Client, args ...interface{}) (PolicyException, error) {
+	var result PolicyException
+
+	err := client.QuerySingle(
+		ctx,
+		insertPolicyExceptionQuery,
+		&result,
+		args...,
+	)
+
+	return result, err
+}
+
+func GetPolicyExceptionsFromEdgeDB(ctx context.Context, client *edgedb.Client) []PolicyException {
+	// Select users.
+	var output []PolicyException
+	query := "SELECT PolicyException {name, counter, last_reconciliation}"
+	err := client.Query(ctx, query, &output)
+	if err != nil {
+		log.Log.Error(err, "Error querying for PolicyException")
+	}
+
+	return output
 }
