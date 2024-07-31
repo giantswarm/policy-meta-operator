@@ -19,14 +19,3 @@ create type PolicyException {
   create multi link targets -> Target;
   create multi link policies -> Policy;
 };
-
-insert Target { 
-    names := ["chart-operator"],
-    namespaces := ["giantswarm"],
-    kinds := ["deployment"]
-};
-insert Target { 
-    names := ["my-deployment"],
-    namespaces := ["default"],
-    kinds := ["Deployment"]
-};
