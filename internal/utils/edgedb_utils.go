@@ -5,32 +5,8 @@ import (
 	_ "embed"
 
 	"github.com/edgedb/edgedb-go"
-	"sigs.k8s.io/controller-runtime/pkg/log"
+	edgedbutils "github.com/giantswarm/policy-meta-operator/internal/utils/edgedb"
 )
-
-const (
-	EDGEDB_DSN = "edgedb://?password_file=/etc/edgedb/password&tls_ca_file_env=EDGEDB_TLS_CA_FILE&user_env=EDGEDB_USER&host_env=EDGEDB_HOST&port_env=EDGEDB_PORT"
-)
-
-type AutomatedException struct {
-	ID                 edgedb.UUID             `edgedb:"id"`
-	Name               string                  `edgedb:"name"`
-	LastReconciliation edgedb.OptionalDateTime `edgedb:"last_reconciliation"`
-	Counter            edgedb.OptionalInt64    `edgedb:"counter"`
-}
-
-type PolicyException struct {
-	ID                 edgedb.UUID             `edgedb:"id"`
-	Name               string                  `edgedb:"name"`
-	LastReconciliation edgedb.OptionalDateTime `edgedb:"last_reconciliation"`
-	Counter            edgedb.OptionalInt64    `edgedb:"counter"`
-}
-
-//go:embed setupAutomatedExceptionType.edgeql
-var setupAutomatedExceptionTypeQuery string
-
-//go:embed setupPolicyExceptionType.edgeql
-var setupPolicyExceptionTypeQuery string
 
 //go:embed insertAutomatedException.edgeql
 var insertAutomatedExceptionQuery string
@@ -38,48 +14,8 @@ var insertAutomatedExceptionQuery string
 //go:embed insertPolicyException.edgeql
 var insertPolicyExceptionQuery string
 
-func GetEDGEDBClient(ctx context.Context, opts edgedb.Options) *edgedb.Client {
-	_ = log.FromContext(ctx)
-	client, err := edgedb.CreateClientDSN(ctx, EDGEDB_DSN, opts)
-	if err != nil {
-		log.Log.Error(err, "Error creating edgedb client")
-	}
-	return client
-}
-
-func CloseClient(client *edgedb.Client) {
-	err := client.Close()
-	if err != nil {
-		log.Log.Error(err, "Error closing edgedb client")
-	}
-}
-
-func SetupAutomatedExceptionType(ctx context.Context, client *edgedb.Client) (edgedb.Optional, error) {
-	var result edgedb.Optional
-
-	err := client.QuerySingle(
-		ctx,
-		setupAutomatedExceptionTypeQuery,
-		&result,
-	)
-
-	return result, err
-}
-
-func SetupPolicyExceptionType(ctx context.Context, client *edgedb.Client) (edgedb.Optional, error) {
-	var result edgedb.Optional
-
-	err := client.QuerySingle(
-		ctx,
-		setupPolicyExceptionTypeQuery,
-		&result,
-	)
-
-	return result, err
-}
-
-func InsertAutomatedException(ctx context.Context, client *edgedb.Client, args ...interface{}) (AutomatedException, error) {
-	var result AutomatedException
+func InsertAutomatedException(ctx context.Context, client *edgedb.Client, args ...interface{}) (edgedbutils.Exception, error) {
+	var result edgedbutils.Exception
 
 	err := client.QuerySingle(
 		ctx,
@@ -91,8 +27,8 @@ func InsertAutomatedException(ctx context.Context, client *edgedb.Client, args .
 	return result, err
 }
 
-func InsertPolicyException(ctx context.Context, client *edgedb.Client, args ...interface{}) (PolicyException, error) {
-	var result PolicyException
+func InsertPolicyException(ctx context.Context, client *edgedb.Client, args ...interface{}) (edgedbutils.Exception, error) {
+	var result edgedbutils.Exception
 
 	err := client.QuerySingle(
 		ctx,
@@ -104,14 +40,14 @@ func InsertPolicyException(ctx context.Context, client *edgedb.Client, args ...i
 	return result, err
 }
 
-func GetPolicyExceptionsFromEdgeDB(ctx context.Context, client *edgedb.Client) []PolicyException {
-	// Select users.
-	var output []PolicyException
-	query := "SELECT PolicyException {name, counter, last_reconciliation}"
-	err := client.Query(ctx, query, &output)
-	if err != nil {
-		log.Log.Error(err, "Error querying for PolicyException")
-	}
+// func GetPolicyExceptionsFromEdgeDB(ctx context.Context, client *edgedb.Client) []PolicyException {
+// 	// Select users.
+// 	var output []PolicyException
+// 	query := "SELECT PolicyException {name, counter, last_reconciliation}"
+// 	err := client.Query(ctx, query, &output)
+// 	if err != nil {
+// 		log.Log.Error(err, "Error querying for PolicyException")
+// 	}
 
-	return output
-}
+// 	return output
+// }

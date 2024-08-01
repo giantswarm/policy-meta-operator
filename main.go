@@ -40,7 +40,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/webhook"
 
 	"github.com/giantswarm/policy-meta-operator/internal/controller"
-	"github.com/giantswarm/policy-meta-operator/internal/utils"
+	edgedbutils "github.com/giantswarm/policy-meta-operator/internal/utils/edgedb"
 	//+kubebuilder:scaffold:imports
 )
 
@@ -60,23 +60,17 @@ func initEdgeDB() *edgedb.Client {
 	// Initialize schemas
 	setupLog.Info("Setting up EdgeDB schemas")
 	var ctx = context.Background()
-	edgedbClient := utils.GetEDGEDBClient(ctx, edgedb.Options{})
+	edgedbClient := edgedbutils.GetEDGEDBClient(ctx, edgedb.Options{})
 
 	err := edgedbClient.EnsureConnected(ctx)
 	if err != nil {
 		setupLog.Error(err, "Error connecting to edgedb")
 	}
 	// Create AutomatedException Type
-	_, err = utils.SetupAutomatedExceptionType(ctx, edgedbClient)
+	_, err = edgedbutils.SetupTypes(ctx, edgedbClient)
 	if err != nil {
-		setupLog.Info(fmt.Sprintf("Error creating AutomatedException type, probably already exists\n error: %v", err))
+		setupLog.Info(fmt.Sprintf("Error creating types, probably already exists\n error: %v", err))
 
-	}
-
-	// Create PolicyException Type
-	_, err = utils.SetupPolicyExceptionType(ctx, edgedbClient)
-	if err != nil {
-		setupLog.Info(fmt.Sprintf("Error creating PolicyException type, probably already exists\n error: %v", err))
 	}
 
 	return edgedbClient
