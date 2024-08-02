@@ -6,6 +6,7 @@ import (
 
 	"github.com/edgedb/edgedb-go"
 	policyAPI "github.com/giantswarm/policy-api/api/v1alpha1"
+
 	edgedbutils "github.com/giantswarm/policy-meta-operator/internal/utils/edgedb"
 )
 

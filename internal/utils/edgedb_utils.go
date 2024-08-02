@@ -5,6 +5,7 @@ import (
 	_ "embed"
 
 	"github.com/edgedb/edgedb-go"
+
 	edgedbutils "github.com/giantswarm/policy-meta-operator/internal/utils/edgedb"
 )
 
