@@ -33,7 +33,7 @@ type Target struct {
 	Kind       string      `edgedb:"kind"`
 }
 
-//go:embed setupTypes.edgeql
+//go:embed queries/setupTypes.edgeql
 var setupTypesQuery string
 
 func SetupTypes(ctx context.Context, client *edgedb.Client) (edgedb.Optional, error) {
@@ -62,21 +62,21 @@ func translateTargetsToEdgedbTypes(targets []policyAPI.Target) []Target {
 	return edgedbTarget
 }
 
-//go:embed insertPolicyException.edgeql
+//go:embed queries/insertPolicyException.edgeql
 var insertPolicyExceptionQuery string
 
 func InsertPolicyException(ctx context.Context, client *edgedb.Client, policyException policyAPI.PolicyException) (Exception, error) {
 	var edgedbException Exception
 
 	// Temporary hard code fields
-	policyName := policyException.Spec.Policies
+	policies := policyException.Spec.Policies
 	targetNames := translateTargetsToEdgedbTypes(policyException.Spec.Targets)[0].Names
 	targetKind := translateTargetsToEdgedbTypes(policyException.Spec.Targets)[0].Kind
 	targetNamespaces := translateTargetsToEdgedbTypes(policyException.Spec.Targets)[0].Namespaces
 	policyExceptionName := policyException.Name
 
 	params := []interface{}{
-		policyName,
+		policies,
 		targetNames,
 		targetNamespaces,
 		targetKind,
@@ -91,4 +91,20 @@ func InsertPolicyException(ctx context.Context, client *edgedb.Client, policyExc
 	)
 
 	return edgedbException, err
+}
+
+//go:embed queries/deletePolicyException.edgeql
+var deletePolicyExceptionQuery string
+
+func DeletePolicyException(ctx context.Context, client *edgedb.Client, policyExceptionName string) error {
+	var edgedbException Exception
+
+	err := client.QuerySingle(
+		ctx,
+		deletePolicyExceptionQuery,
+		&edgedbException,
+		policyExceptionName,
+	)
+
+	return err
 }
