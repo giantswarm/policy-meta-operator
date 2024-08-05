@@ -27,11 +27,11 @@ insert PolicyException {
     policies := new_policies,
     targets := targets
 }
-unless conflict on .name,
+unless conflict on .name
 else (
-    UPDATE PolicyException
-    SET {
-        policies := new_policies
+    update PolicyException
+    set {
+        policies := new_policies,
+        targets := targets
     }
-    FILTER .name = <str>$4
 );

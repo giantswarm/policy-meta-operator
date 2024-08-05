@@ -22,7 +22,6 @@ type Policy struct {
 
 type Exception struct {
 	ID       edgedb.UUID `edgedb:"id"`
-	Name     string      `edgedb:"name"`
 	Targets  []Target    `edgedb:"targets"`
 	Policies []Policy    `edgedb:"policies"`
 }
@@ -76,15 +75,19 @@ func InsertPolicyException(ctx context.Context, client *edgedb.Client, policyExc
 	targetNamespaces := translateTargetsToEdgedbTypes(policyException.Spec.Targets)[0].Namespaces
 	policyExceptionName := policyException.Name
 
-	err := client.QuerySingle(
-		ctx,
-		insertPolicyExceptionQuery,
-		&edgedbException,
+	params := []interface{}{
 		policyName,
 		targetNames,
 		targetNamespaces,
 		targetKind,
 		policyExceptionName,
+	}
+
+	err := client.QuerySingle(
+		ctx,
+		insertPolicyExceptionQuery,
+		&edgedbException,
+		params...,
 	)
 
 	return edgedbException, err
