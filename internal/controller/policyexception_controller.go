@@ -41,14 +41,18 @@ type PolicyExceptionReconciler struct {
 func (r *PolicyExceptionReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
 	_ = log.FromContext(ctx)
 
-	log.Log.Info("Reconciling PolicyException")
-
 	var policyException policyAPI.PolicyException
 
 	if err := r.Get(ctx, req.NamespacedName, &policyException); err != nil {
 		if !errors.IsNotFound(err) {
 			// Error fetching the report
 			log.Log.Error(err, "unable to fetch PolicyException")
+		} else {
+			// PolicyException not found, make sure we don't have it in edgedb either
+			err := edgedbutils.DeletePolicyException(ctx, r.EdgeDBClient, req.Name)
+			if err != nil {
+				log.Log.Error(err, "Error deleting policy exception from database")
+			}
 		}
 		return ctrl.Result{}, client.IgnoreNotFound(err)
 	}
