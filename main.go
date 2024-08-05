@@ -65,6 +65,7 @@ func initEdgeDB() *edgedb.Client {
 	err := edgedbClient.EnsureConnected(ctx)
 	if err != nil {
 		setupLog.Error(err, "Error connecting to edgedb")
+		os.Exit(1)
 	}
 	// Create AutomatedException Type
 	_, err = edgedbutils.SetupTypes(ctx, edgedbClient)
@@ -169,6 +170,16 @@ func main() {
 		os.Exit(1)
 	}
 	//+kubebuilder:scaffold:builder
+
+	go func() {
+		if err := (&controller.PolicyManifestReconciler{
+			Client:       mgr.GetClient(),
+			EdgeDBClient: edgedbClient,
+			Scheme:       mgr.GetScheme(),
+		}).Reconcile(context.Background()); err != nil {
+			setupLog.Error(err, "error reconciling PolicyManifest")
+		}
+	}()
 
 	if err := mgr.AddHealthzCheck("healthz", healthz.Ping); err != nil {
 		setupLog.Error(err, "unable to set up health check")

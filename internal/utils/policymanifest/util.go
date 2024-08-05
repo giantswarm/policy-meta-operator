@@ -48,7 +48,7 @@ func translateEdgedbExceptions(edgedbExceptions []edgedbutils.Exception) []polic
 	return newExceptions
 }
 
-func CreatePolicyManifest(ctx context.Context, client *edgedb.Client, args ...interface{}) (policyAPI.PolicyManifest, error) {
+func CreatePolicyManifest(ctx context.Context, client *edgedb.Client, args string) (policyAPI.PolicyManifest, error) {
 	var policyManifest policyAPI.PolicyManifest
 
 	edgedbPolman, err := getPolicyManifest(ctx, client, args)
@@ -56,11 +56,10 @@ func CreatePolicyManifest(ctx context.Context, client *edgedb.Client, args ...in
 		return policyManifest, err
 	}
 
+	// Set GroupVersionKind
+	policyManifest.SetGroupVersionKind(policyAPI.GroupVersion.WithKind("PolicyManifest"))
 	// Translate edgedb Exceptions to PolicyManifest Exceptions
 	exceptions := translateEdgedbExceptions(edgedbPolman.Exceptions)
-
-	// Manually set Mode until we have a PolicyConfig schema
-	mode := "warming"
 
 	// Format Policy Exception
 	// Set Name
@@ -69,7 +68,15 @@ func CreatePolicyManifest(ctx context.Context, client *edgedb.Client, args ...in
 	policyManifest.Labels = make(map[string]string)
 	policyManifest.Labels[ManagedBy] = ComponentName
 	// Set Exceptions
+
+	// Hardcoded for testing
+	// Manually set Mode until we have a PolicyConfig schema
+	mode := "warming"
 	policyManifest.Spec.Exceptions = exceptions
+	policyManifest.Spec.AutomatedExceptions = exceptions
+	policyManifest.Spec.Args = []string{"--no-warnings"}
+	// Hardcoded for testing
+
 	// Set Mode
 	policyManifest.Spec.Mode = mode
 
