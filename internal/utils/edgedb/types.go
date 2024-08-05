@@ -70,7 +70,7 @@ func InsertPolicyException(ctx context.Context, client *edgedb.Client, policyExc
 	var edgedbException Exception
 
 	// Temporary hard code fields
-	policyName := policyException.Spec.Policies[0]
+	policyName := policyException.Spec.Policies
 	targetNames := translateTargetsToEdgedbTypes(policyException.Spec.Targets)[0].Names
 	targetKind := translateTargetsToEdgedbTypes(policyException.Spec.Targets)[0].Kind
 	targetNamespaces := translateTargetsToEdgedbTypes(policyException.Spec.Targets)[0].Namespaces

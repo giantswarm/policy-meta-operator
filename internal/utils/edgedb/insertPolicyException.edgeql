@@ -1,11 +1,8 @@
 with
+    policy_names := <array<str>>$0,
     policies := (
-        insert Policy {
-            name := <str>$0,
-            mode := "warming"
-        }
-        unless conflict on .name
-        else (select Policy filter .name = <str>$0)
+      SELECT Policy
+      FILTER .name IN array_unpack(policy_names)
     ),
     targets := (
         insert Target {
