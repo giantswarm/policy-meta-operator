@@ -21,13 +21,13 @@ const (
 	CreateOp = "created"
 )
 
-type Controller struct {
+type ClientHelper struct {
 	client.Client
 }
 
 // CreateOrUpdate attempts first to patch the object given but if an IsNotFound error
 // is returned it instead creates the resource.
-func (r *Controller) CreateOrUpdate(ctx context.Context, obj client.Object) (string, error) {
+func (r *ClientHelper) CreateOrUpdate(ctx context.Context, obj client.Object) (string, error) {
 	existingObj := unstructured.Unstructured{}
 	existingObj.SetGroupVersionKind(obj.GetObjectKind().GroupVersionKind())
 

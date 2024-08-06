@@ -33,7 +33,7 @@ func (r *PolicyManifestReconciler) Reconcile(ctx context.Context) error {
 				log.Log.Error(err, "Error creating PolicyManifest from edgedb data")
 			}
 
-			c := utils.Controller{Client: r.Client}
+			c := utils.ClientHelper{Client: r.Client}
 			if _, err := c.CreateOrUpdate(ctx, &policyManifest); err != nil {
 				// Error creating or updating PolicyManifest
 				log.Log.Error(err, "unable to create or update PolicyManifest")
