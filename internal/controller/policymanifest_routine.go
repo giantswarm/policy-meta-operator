@@ -10,7 +10,8 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/log"
 
-	utils "github.com/giantswarm/policy-meta-operator/internal/utils"
+	"github.com/giantswarm/policy-meta-operator/internal/utils"
+	edgedbutils "github.com/giantswarm/policy-meta-operator/internal/utils/edgedb"
 	polman "github.com/giantswarm/policy-meta-operator/internal/utils/policymanifest"
 )
 
@@ -25,21 +26,30 @@ func (r *PolicyManifestReconciler) Reconcile(ctx context.Context) error {
 
 	for {
 		// List all Policies from edgedb
-		policies := []string{"disallow-capabilities-strict", "require-run-as-nonroot"}
-
+		policies, err := edgedbutils.ListPoliciesNames(ctx, r.EdgeDBClient)
+		if err != nil {
+			log.Log.Error(err, "Error fetching Policies from edgedb")
+		} else if len(policies) == 0 {
+			log.Log.Info("No Policies found in edgedb")
+		}
 		for _, policy := range policies {
-			policyManifest, err := polman.CreatePolicyManifest(ctx, r.EdgeDBClient, policy)
+			policyManifest, err := polman.CreatePolicyManifest(ctx, r.EdgeDBClient, policy.Name)
 			if err != nil {
 				log.Log.Error(err, "Error creating PolicyManifest from edgedb data")
 			}
 
 			c := utils.ClientHelper{Client: r.Client}
-			if _, err := c.CreateOrUpdate(ctx, &policyManifest); err != nil {
+			if op, err := c.CreateOrUpdate(ctx, &policyManifest); err != nil {
 				// Error creating or updating PolicyManifest
 				log.Log.Error(err, "unable to create or update PolicyManifest")
 				return err
 			} else {
-				log.Log.Info(fmt.Sprintf("PolicyManifest reconciled: %s", policyManifest.Name))
+				switch {
+				case op == "created":
+					log.Log.Info(fmt.Sprintf("Created PolicyManifest %s", policyManifest.Name))
+				case op == "updated":
+					log.Log.Info(fmt.Sprintf("Updated PolicyManifest %s", policyManifest.Name))
+				}
 			}
 		}
 		time.Sleep(30 * time.Second)

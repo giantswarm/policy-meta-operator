@@ -8,9 +8,11 @@ import (
 )
 
 type PolicyManifest struct {
-	ID         edgedb.UUID `edgedb:"id"`
-	Exceptions []Exception `edgedb:"exceptions"`
-	Name       string      `edgedb:"name"`
+	ID                  edgedb.UUID `edgedb:"id"`
+	Mode                string      `edgedb:"mode"`
+	PolicyExceptions    []Exception `edgedb:"policyExceptions"`
+	AutomatedExceptions []Exception `edgedb:"automatedExceptions"`
+	Name                string      `edgedb:"name"`
 }
 
 type Policy struct {

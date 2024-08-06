@@ -70,3 +70,15 @@ func DeletePolicyException(ctx context.Context, client *edgedb.Client, policyExc
 
 	return err
 }
+
+func ListPoliciesNames(ctx context.Context, client *edgedb.Client) ([]Policy, error) {
+	var policies []Policy
+
+	err := client.Query(
+		ctx,
+		"SELECT Policy{name}",
+		&policies,
+	)
+
+	return policies, err
+}
