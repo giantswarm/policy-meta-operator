@@ -2,7 +2,7 @@ module github.com/giantswarm/policy-meta-operator
 
 go 1.22.0
 
-toolchain go1.22.5
+toolchain go1.22.6
 
 require (
 	github.com/edgedb/edgedb-go v0.17.2
