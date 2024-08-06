@@ -1,6 +1,15 @@
 select Policy {
   name,
-  exceptions := .<policies[is Exception] {
+  automatedExceptions := .<policies[is AutomatedException] {
+    targets := (
+      select distinct .targets {
+        names,
+        namespaces,
+        id
+      }
+    )
+  },
+  policyExceptions := .<policies[is PolicyException] {
     targets := (
       select distinct .targets {
         names,

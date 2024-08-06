@@ -74,7 +74,7 @@ func CreatePolicyManifest(ctx context.Context, client *edgedb.Client, args strin
 	mode := "warming"
 	policyManifest.Spec.Exceptions = exceptions
 	policyManifest.Spec.AutomatedExceptions = exceptions
-	policyManifest.Spec.Args = []string{"--no-warnings"}
+	policyManifest.Spec.Args = []string{"testing args"}
 	// Hardcoded for testing
 
 	// Set Mode
