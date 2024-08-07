@@ -59,10 +59,6 @@ func CreatePolicyManifest(ctx context.Context, client *edgedb.Client, args strin
 	// Set GroupVersionKind
 	policyManifest.SetGroupVersionKind(policyAPI.GroupVersion.WithKind("PolicyManifest"))
 
-	// Set Arguments
-	// TODO: REPLACE THIS WHEN WE HAVE POLICYCONFIGS
-	policyManifest.Spec.Args = []string{"test args"}
-
 	// Set Name
 	policyManifest.Name = edgedbPolman.Name
 
@@ -74,8 +70,10 @@ func CreatePolicyManifest(ctx context.Context, client *edgedb.Client, args strin
 	policyManifest.Spec.Exceptions = translateEdgedbExceptions(edgedbPolman.PolicyExceptions)
 	policyManifest.Spec.AutomatedExceptions = translateEdgedbExceptions(edgedbPolman.AutomatedExceptions)
 
-	// Set Mode
-	policyManifest.Spec.Mode = edgedbPolman.Mode
+	// Set Mode if present
+	if mode, present := edgedbPolman.Mode.Get(); present {
+		policyManifest.Spec.Mode = mode
+	}
 
 	return policyManifest, err
 }

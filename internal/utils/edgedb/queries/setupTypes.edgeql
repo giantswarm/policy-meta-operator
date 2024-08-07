@@ -2,8 +2,12 @@ create type Policy {
   create required property name -> str {
     create constraint exclusive
   };
-  create required property mode -> str;
-  create property last_reconciliation -> datetime;
+  create property defaultPolicyState -> str;
+};
+
+create type PolicyConfig extending Policy {
+  create link policyName -> policy;
+  create property policyState -> str;
 };
 
 create type Target {

@@ -8,17 +8,23 @@ import (
 )
 
 type PolicyManifest struct {
-	ID                  edgedb.UUID `edgedb:"id"`
-	Mode                string      `edgedb:"mode"`
-	PolicyExceptions    []Exception `edgedb:"policyExceptions"`
-	AutomatedExceptions []Exception `edgedb:"automatedExceptions"`
-	Name                string      `edgedb:"name"`
+	ID                  edgedb.UUID        `edgedb:"id"`
+	Mode                edgedb.OptionalStr `edgedb:"mode"`
+	PolicyExceptions    []Exception        `edgedb:"policyExceptions"`
+	AutomatedExceptions []Exception        `edgedb:"automatedExceptions"`
+	Name                string             `edgedb:"name"`
 }
 
 type Policy struct {
-	ID   edgedb.UUID `edgedb:"id"`
-	Name string      `edgedb:"name"`
-	Mode string      `edgedb:"mode"`
+	ID                 edgedb.UUID        `edgedb:"id"`
+	Name               string             `edgedb:"name"`
+	DefaultPolicyState edgedb.OptionalStr `edgedb:"defaultPolicyState"`
+}
+
+type PolicyConfig struct {
+	ID          edgedb.UUID        `edgedb:"id"`
+	PolicyName  []Policy           `edgedb:"policyName"`
+	PolicyState edgedb.OptionalStr `edgedb:"policyState"`
 }
 
 type Exception struct {

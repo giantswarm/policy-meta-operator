@@ -37,6 +37,12 @@ func InsertPolicyException(ctx context.Context, client *edgedb.Client, policyExc
 	targetNamespaces := translateTargetsToEdgedbTypes(policyException.Spec.Targets)[0].Namespaces
 	policyExceptionName := policyException.Name
 
+	// Create Policies in edgedb if they don't exist
+	err := createPoliciesIfNonExistent(ctx, client, policies)
+	if err != nil {
+		return edgedbException, err
+	}
+
 	params := []interface{}{
 		policies,
 		targetNames,
@@ -45,7 +51,7 @@ func InsertPolicyException(ctx context.Context, client *edgedb.Client, policyExc
 		policyExceptionName,
 	}
 
-	err := client.QuerySingle(
+	err = client.QuerySingle(
 		ctx,
 		insertPolicyExceptionQuery,
 		&edgedbException,
@@ -55,15 +61,44 @@ func InsertPolicyException(ctx context.Context, client *edgedb.Client, policyExc
 	return edgedbException, err
 }
 
-//go:embed queries/deletePolicyException.edgeql
-var deletePolicyExceptionQuery string
+func createPoliciesIfNonExistent(ctx context.Context, client *edgedb.Client, policies []string) error {
+
+	for _, policy := range policies {
+		var result []Policy
+		err := client.Query(
+			ctx,
+			"SELECT Policy {name} FILTER .name = <str>$0",
+			&result,
+			policy,
+		)
+		if err != nil {
+			return err
+		}
+
+		// Check if result is empty
+		var newPolicy Policy
+		if len(result) == 0 {
+			err := client.QuerySingle(
+				ctx,
+				"INSERT Policy {name := <str>$0}",
+				&newPolicy,
+				policy,
+			)
+			if err != nil {
+				return err
+			}
+		}
+	}
+
+	return nil
+}
 
 func DeletePolicyException(ctx context.Context, client *edgedb.Client, policyExceptionName string) error {
 	var edgedbException Exception
 
 	err := client.QuerySingle(
 		ctx,
-		deletePolicyExceptionQuery,
+		"DELETE PolicyException FILTER .name = <str>$0 LIMIT 1",
 		&edgedbException,
 		policyExceptionName,
 	)
