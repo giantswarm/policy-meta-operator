@@ -18,10 +18,9 @@ package controller
 
 import (
 	"context"
-	"fmt"
-	"time"
 
 	"github.com/edgedb/edgedb-go"
+	"github.com/pingcap/errors"
 
 	policyAPI "github.com/giantswarm/policy-api/api/v1alpha1"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -29,7 +28,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/log"
 
-	"github.com/giantswarm/policy-meta-operator/internal/utils"
+	edgedbutils "github.com/giantswarm/policy-meta-operator/internal/utils/edgedb"
 )
 
 // PolicyExceptionReconciler reconciles a AutomatedException object
@@ -42,24 +41,25 @@ type PolicyExceptionReconciler struct {
 func (r *PolicyExceptionReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
 	_ = log.FromContext(ctx)
 
-	log.Log.Info("Reconciling PolicyException")
+	var policyException policyAPI.PolicyException
 
-	// Create exception with counter
-	_, err := utils.InsertPolicyException(ctx, r.EdgeDBClient, req.Name, int64(1), time.Now())
-	if err != nil {
-		log.Log.Error(err, "Error inserting policy exception in database")
+	if err := r.Get(ctx, req.NamespacedName, &policyException); err != nil {
+		if !errors.IsNotFound(err) {
+			// Error fetching the report
+			log.Log.Error(err, "unable to fetch PolicyException")
+		} else {
+			// PolicyException not found, make sure we don't have it in edgedb either
+			err := edgedbutils.DeletePolicyException(ctx, r.EdgeDBClient, req.Name)
+			if err != nil {
+				log.Log.Error(err, "Error deleting policy exception from database")
+			}
+		}
+		return ctrl.Result{}, client.IgnoreNotFound(err)
 	}
 
-	// Select PolicyExceptions
-	policyExceptions := utils.GetPolicyExceptionsFromEdgeDB(ctx, r.EdgeDBClient)
-
-	for _, policyException := range policyExceptions {
-		// Convert OptionalInt64 to Int64
-		counter, _ := policyException.Counter.Get()
-		// Convert OptionalDateTime to time.Time
-		lastReconciliation, _ := policyException.LastReconciliation.Get()
-		// Print PolicyException
-		log.Log.Info(fmt.Sprintf("PolicyException: %s, Counter: %d, Reconciliation time: %v", policyException.Name, counter, lastReconciliation))
+	_, err := edgedbutils.InsertPolicyException(ctx, r.EdgeDBClient, policyException)
+	if err != nil {
+		log.Log.Error(err, "Error inserting policy exception in database")
 	}
 
 	return ctrl.Result{}, nil
