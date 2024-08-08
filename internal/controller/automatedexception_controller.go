@@ -23,11 +23,12 @@ import (
 	"github.com/pingcap/errors"
 
 	policyAPI "github.com/giantswarm/policy-api/api/v1alpha1"
-	edgedbutils "github.com/giantswarm/policy-meta-operator/internal/utils/edgedb"
 	"k8s.io/apimachinery/pkg/runtime"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/log"
+
+	edgedbutils "github.com/giantswarm/policy-meta-operator/internal/utils/edgedb"
 )
 
 // AutomatedExceptionReconciler reconciles an AutomatedException object
