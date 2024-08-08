@@ -24,6 +24,23 @@ func translateTargetsToEdgedbTypes(targets []policyAPI.Target) []Target {
 	return edgedbTarget
 }
 
+//go:embed queries/insertPolicy.edgeql
+var insertPolicyQuery string
+
+func InsertPolicy(ctx context.Context, client *edgedb.Client, policy policyAPI.Policy) (Policy, error) {
+	var edgedbPolicy Policy
+
+	err := client.QuerySingle(
+		ctx,
+		insertPolicyQuery,
+		&edgedbPolicy,
+		policy.Name,
+		policy.Spec.DefaultPolicyState,
+	)
+
+	return edgedbPolicy, err
+}
+
 //go:embed queries/insertPolicyException.edgeql
 var insertPolicyExceptionQuery string
 
