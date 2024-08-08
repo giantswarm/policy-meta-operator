@@ -123,6 +123,19 @@ func DeletePolicyException(ctx context.Context, client *edgedb.Client, policyExc
 	return err
 }
 
+func DeletePolicy(ctx context.Context, client *edgedb.Client, policyName string) error {
+	var edgedbPolicy Policy
+
+	err := client.QuerySingle(
+		ctx,
+		"DELETE Policy FILTER .name = <str>$0 LIMIT 1",
+		&edgedbPolicy,
+		policyName,
+	)
+
+	return err
+}
+
 func ListPoliciesNames(ctx context.Context, client *edgedb.Client) ([]Policy, error) {
 	var policies []Policy
 

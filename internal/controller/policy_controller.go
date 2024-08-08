@@ -49,7 +49,7 @@ func (r *PolicyReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctr
 			log.Log.Error(err, "unable to fetch Policy")
 		} else {
 			// Policy not found, make sure we don't have it in edgedb either
-			err := edgedbutils.DeletePolicyException(ctx, r.EdgeDBClient, req.Name)
+			err := edgedbutils.DeletePolicy(ctx, r.EdgeDBClient, req.Name)
 			if err != nil {
 				log.Log.Error(err, "Error deleting Policy from database")
 			}
