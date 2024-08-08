@@ -178,6 +178,15 @@ func main() {
 		setupLog.Error(err, "unable to create controller", "controller", "Policy")
 		os.Exit(1)
 	}
+
+	if err = (&controller.PolicyConfigReconciler{
+		Client:       mgr.GetClient(),
+		EdgeDBClient: edgedbClient,
+		Scheme:       mgr.GetScheme(),
+	}).SetupWithManager(mgr); err != nil {
+		setupLog.Error(err, "unable to create controller", "controller", "PolicyConfig")
+		os.Exit(1)
+	}
 	//+kubebuilder:scaffold:builder
 
 	go func() {

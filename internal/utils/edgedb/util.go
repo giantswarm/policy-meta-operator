@@ -41,6 +41,24 @@ func InsertPolicy(ctx context.Context, client *edgedb.Client, policy policyAPI.P
 	return edgedbPolicy, err
 }
 
+//go:embed queries/insertPolicyConfig.edgeql
+var insertPolicyConfigQuery string
+
+func InsertPolicyConfig(ctx context.Context, client *edgedb.Client, policyConfig policyAPI.PolicyConfig) (PolicyConfig, error) {
+	var edgedbPolicyConfig PolicyConfig
+
+	err := client.QuerySingle(
+		ctx,
+		insertPolicyConfigQuery,
+		&edgedbPolicyConfig,
+		policyConfig.Name,
+		policyConfig.Spec.PolicyState,
+		policyConfig.Spec.PolicyName,
+	)
+
+	return edgedbPolicyConfig, err
+}
+
 //go:embed queries/insertPolicyException.edgeql
 var insertPolicyExceptionQuery string
 
@@ -131,6 +149,19 @@ func DeletePolicy(ctx context.Context, client *edgedb.Client, policyName string)
 		"DELETE Policy FILTER .name = <str>$0 LIMIT 1",
 		&edgedbPolicy,
 		policyName,
+	)
+
+	return err
+}
+
+func DeletePolicyConfig(ctx context.Context, client *edgedb.Client, policyConfigName string) error {
+	var edgedbPolicy PolicyConfig
+
+	err := client.QuerySingle(
+		ctx,
+		"DELETE PolicyConfig FILTER .name = <str>$0 LIMIT 1",
+		&edgedbPolicy,
+		policyConfigName,
 	)
 
 	return err
