@@ -20,8 +20,10 @@ import (
 	"context"
 
 	"github.com/edgedb/edgedb-go"
+	"github.com/pingcap/errors"
 
 	policyAPI "github.com/giantswarm/policy-api/api/v1alpha1"
+	edgedbutils "github.com/giantswarm/policy-meta-operator/internal/utils/edgedb"
 	"k8s.io/apimachinery/pkg/runtime"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
@@ -38,7 +40,26 @@ type AutomatedExceptionReconciler struct {
 func (r *AutomatedExceptionReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
 	_ = log.FromContext(ctx)
 
-	log.Log.Info("Reconciling AutomatedException")
+	var automatedException policyAPI.AutomatedException
+
+	if err := r.Get(ctx, req.NamespacedName, &automatedException); err != nil {
+		if !errors.IsNotFound(err) {
+			// Error fetching the report
+			log.Log.Error(err, "unable to fetch AutomatedException")
+		} else {
+			// AutomatedException not found, make sure we don't have it in edgedb either
+			err := edgedbutils.DeletePolicyException(ctx, r.EdgeDBClient, req.Name)
+			if err != nil {
+				log.Log.Error(err, "Error deleting AutomatedException from database")
+			}
+		}
+		return ctrl.Result{}, client.IgnoreNotFound(err)
+	}
+
+	_, err := edgedbutils.InsertAutomatedException(ctx, r.EdgeDBClient, automatedException)
+	if err != nil {
+		log.Log.Error(err, "Error inserting AutomatedException in database")
+	}
 
 	return ctrl.Result{}, nil
 }

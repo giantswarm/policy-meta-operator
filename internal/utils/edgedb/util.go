@@ -59,6 +59,43 @@ func InsertPolicyConfig(ctx context.Context, client *edgedb.Client, policyConfig
 	return edgedbPolicyConfig, err
 }
 
+//go:embed queries/insertAutomatedException.edgeql
+var insertAutomatedExceptionQuery string
+
+func InsertAutomatedException(ctx context.Context, client *edgedb.Client, automatedException policyAPI.AutomatedException) (Exception, error) {
+	var edgedbException Exception
+
+	// Temporary hard code fields
+	policies := automatedException.Spec.Policies
+	targetNames := translateTargetsToEdgedbTypes(automatedException.Spec.Targets)[0].Names
+	targetKind := translateTargetsToEdgedbTypes(automatedException.Spec.Targets)[0].Kind
+	targetNamespaces := translateTargetsToEdgedbTypes(automatedException.Spec.Targets)[0].Namespaces
+	policyExceptionName := automatedException.Name
+
+	// Create Policies in edgedb if they don't exist
+	err := createPoliciesIfNonExistent(ctx, client, policies)
+	if err != nil {
+		return edgedbException, err
+	}
+
+	params := []interface{}{
+		policies,
+		targetNames,
+		targetNamespaces,
+		targetKind,
+		policyExceptionName,
+	}
+
+	err = client.QuerySingle(
+		ctx,
+		insertAutomatedExceptionQuery,
+		&edgedbException,
+		params...,
+	)
+
+	return edgedbException, err
+}
+
 //go:embed queries/insertPolicyException.edgeql
 var insertPolicyExceptionQuery string
 
