@@ -7,7 +7,7 @@ on:
   # Allows to run this workflow manually from the Actions tab
   workflow_dispatch:
 env:
-  policy_api_repo: https://github.com/giantswarm/policy-reporter-upstream
+  policy_api_repo: https://github.com/giantswarm/policy-api
   branch: update-policy-api-crds
 jobs:
   sync-app-kyverno-with-fork:
@@ -23,6 +23,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           token: ${{ steps.generate_token.outputs.token }}
+          fetch-depth: 0
       - name: Set up git identity
         run: |
           git config --local user.email "149080493+heraldbot[bot]@users.noreply.github.com"
