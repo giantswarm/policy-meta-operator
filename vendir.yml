@@ -1,0 +1,12 @@
+apiVersion: vendir.k14s.io/v1alpha1
+kind: Config
+directories:
+- path: helm/policy-meta-operator/templates/crds
+  contents:
+  - path: .
+    git:
+      url: https://github.com/giantswarm/policy-api
+      ref: v0.0.3
+    includePaths:
+      - crds/**
+    newRootPath: crds/
