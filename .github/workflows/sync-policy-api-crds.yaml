@@ -55,6 +55,12 @@ jobs:
 
       - name: Install and run Vendir
         run : |
+          if [ -x "$(command -v wget)" ]; then
+            dl_bin="wget -nv -O-"
+          else
+            dl_bin="curl -s -L"
+          fi
+
           binary_type=linux-amd64
           echo "Installing vendir..."
           $dl_bin https://github.com/carvel-dev/vendir/releases/download/v0.41.0/vendir-${binary_type} > /tmp/vendir
