@@ -75,7 +75,7 @@ jobs:
           do
               yq eval '.metadata.annotations."helm.sh/resource-policy" = "keep"' -i $file
               yq eval ".metadata.labels = \"${LABELS}\"" -i "$file"
-              sed -i '' "/labels:/ {N; s/labels: '\({{.*}}\)'/labels:\n    \1/;}" $file
+              sed -i "/labels:/ {N; s/labels: '\({{.*}}\)'/labels:\n    \1/;}" $file
           done
       - name: Commit and push changes
         run: |
