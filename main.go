@@ -67,7 +67,7 @@ func initEdgeDB() *edgedb.Client {
 		setupLog.Error(err, "Error connecting to edgedb")
 		os.Exit(1)
 	}
-	// Create AutomatedException Type
+	// Setup EdgeDB types
 	_, err = edgedbutils.SetupTypes(ctx, edgedbClient)
 	if err != nil {
 		setupLog.Info(fmt.Sprintf("Error creating types, probably already exists\n error: %v", err))
@@ -167,6 +167,24 @@ func main() {
 		Scheme:       mgr.GetScheme(),
 	}).SetupWithManager(mgr); err != nil {
 		setupLog.Error(err, "unable to create controller", "controller", "PolicyException")
+		os.Exit(1)
+	}
+
+	if err = (&controller.PolicyReconciler{
+		Client:       mgr.GetClient(),
+		EdgeDBClient: edgedbClient,
+		Scheme:       mgr.GetScheme(),
+	}).SetupWithManager(mgr); err != nil {
+		setupLog.Error(err, "unable to create controller", "controller", "Policy")
+		os.Exit(1)
+	}
+
+	if err = (&controller.PolicyConfigReconciler{
+		Client:       mgr.GetClient(),
+		EdgeDBClient: edgedbClient,
+		Scheme:       mgr.GetScheme(),
+	}).SetupWithManager(mgr); err != nil {
+		setupLog.Error(err, "unable to create controller", "controller", "PolicyConfig")
 		os.Exit(1)
 	}
 	//+kubebuilder:scaffold:builder

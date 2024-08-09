@@ -31,43 +31,43 @@ import (
 	edgedbutils "github.com/giantswarm/policy-meta-operator/internal/utils/edgedb"
 )
 
-// AutomatedExceptionReconciler reconciles an AutomatedException object
-type AutomatedExceptionReconciler struct {
+// PolicyConfigReconciler reconciles a AutomatedException object
+type PolicyConfigReconciler struct {
 	client.Client
-	Scheme       *runtime.Scheme
 	EdgeDBClient *edgedb.Client
+	Scheme       *runtime.Scheme
 }
 
-func (r *AutomatedExceptionReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
+func (r *PolicyConfigReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
 	_ = log.FromContext(ctx)
 
-	var automatedException policyAPI.AutomatedException
+	var gsPolicyConfig policyAPI.PolicyConfig
 
-	if err := r.Get(ctx, req.NamespacedName, &automatedException); err != nil {
+	if err := r.Get(ctx, req.NamespacedName, &gsPolicyConfig); err != nil {
 		if !errors.IsNotFound(err) {
 			// Error fetching the report
-			log.Log.Error(err, "unable to fetch AutomatedException")
+			log.Log.Error(err, "unable to fetch PolicyConfig")
 		} else {
-			// AutomatedException not found, make sure we don't have it in edgedb either
-			err := edgedbutils.DeletePolicyException(ctx, r.EdgeDBClient, req.Name)
+			// PolicyConfig not found, make sure we don't have it in edgedb either
+			err := edgedbutils.DeletePolicyConfig(ctx, r.EdgeDBClient, req.Name)
 			if err != nil {
-				log.Log.Error(err, "Error deleting AutomatedException from database")
+				log.Log.Error(err, "Error deleting PolicyConfig from database")
 			}
 		}
 		return ctrl.Result{}, client.IgnoreNotFound(err)
 	}
 
-	_, err := edgedbutils.InsertAutomatedException(ctx, r.EdgeDBClient, automatedException)
+	_, err := edgedbutils.InsertPolicyConfig(ctx, r.EdgeDBClient, gsPolicyConfig)
 	if err != nil {
-		log.Log.Error(err, "Error inserting AutomatedException in database")
+		log.Log.Error(err, "Error inserting PolicyConfig in database")
 	}
 
 	return ctrl.Result{}, nil
 }
 
 // SetupWithManager sets up the controller with the Manager.
-func (r *AutomatedExceptionReconciler) SetupWithManager(mgr ctrl.Manager) error {
+func (r *PolicyConfigReconciler) SetupWithManager(mgr ctrl.Manager) error {
 	return ctrl.NewControllerManagedBy(mgr).
-		For(&policyAPI.AutomatedException{}).
+		For(&policyAPI.PolicyConfig{}).
 		Complete(r)
 }

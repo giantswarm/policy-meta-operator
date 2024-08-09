@@ -23,6 +23,7 @@ type Policy struct {
 
 type PolicyConfig struct {
 	ID          edgedb.UUID        `edgedb:"id"`
+	Name        string             `edgedb:"name"`
 	PolicyName  []Policy           `edgedb:"policyName"`
 	PolicyState edgedb.OptionalStr `edgedb:"policyState"`
 }
