@@ -50,8 +50,6 @@ jobs:
 
           # Modify the version in Vendir config
           sed -i -r "s/(ref:).*/\1 $LAST_TAG/g" vendir.yml
-          git add vendir.yml
-          git commit -m "Update app version from fork repo"
 
       - name: Install and run Vendir
         run : |
