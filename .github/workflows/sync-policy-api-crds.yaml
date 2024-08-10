@@ -1,0 +1,99 @@
+name: Sync Policy API CRDs
+
+on:
+  schedule:
+    - cron: '0 8 */7 * *' # At 08:00 on every 7th day-of-month
+
+  # Allows to run this workflow manually from the Actions tab
+  workflow_dispatch:
+env:
+  policy_api_repo: https://github.com/giantswarm/policy-api
+  branch: update-policy-api-crds
+jobs:
+  sync-app-kyverno-with-fork:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Generate a token
+        id: generate_token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.HERALD_APP_ID }}
+          private-key: ${{ secrets.HERALD_APP_KEY }}
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ steps.generate_token.outputs.token }}
+          fetch-depth: 0
+      - name: Set up git identity
+        run: |
+          git config --local user.email "149080493+heraldbot[bot]@users.noreply.github.com"
+          git config --local user.name "HeraldBot[bot]"
+      - name: Get latest Policy API release tag
+        run: |
+          # Get the last tag from fork repo
+          LAST_TAG=$(git ls-remote --tags --sort='v:refname' --refs $policy_api_repo \
+           | tail -1 | cut -d '/' -f3)
+          echo "Policy API last tag found is $LAST_TAG"
+
+          # Fetch origin
+          git fetch origin
+
+          # Check if branch exists
+          if [ -z $(git rev-parse --verify origin/$branch 2>/dev/null) ]
+          then
+            # Branch doesn't exist, create it
+            git checkout -b $branch
+          else
+            # Branch exists, use existing
+            git checkout $branch
+          fi
+
+          # Modify the version in Vendir config
+          sed -i -r "s/(ref:).*/\1 $LAST_TAG/g" vendir.yml
+
+      - name: Install and run Vendir
+        run : |
+          if [ -x "$(command -v wget)" ]; then
+            dl_bin="wget -nv -O-"
+          else
+            dl_bin="curl -s -L"
+          fi
+
+          binary_type=linux-amd64
+          echo "Installing vendir..."
+          $dl_bin https://github.com/carvel-dev/vendir/releases/download/v0.41.0/vendir-${binary_type} > /tmp/vendir
+          chmod +x /tmp/vendir
+
+          /tmp/vendir sync
+      - name: Add labels and annotations to CRDs
+        run: |
+          cd helm/policy-meta-operator/templates/crds
+
+          LABELS='{{- include \"labels.common\" . | nindent 4 }}'
+
+          for file in $(ls *.yaml)
+          do
+              yq eval '.metadata.annotations."helm.sh/resource-policy" = "keep"' -i $file
+              yq eval ".metadata.labels = \"${LABELS}\"" -i "$file"
+              sed -i "/labels:/ {N; s/labels: '\({{.*}}\)'/labels:\n    \1/;}" $file
+          done
+      - name: Commit and push changes
+        run: |
+          # Commit and push
+          git add .
+          git commit -m "Update Policy API CRDs"
+          git push origin $branch
+      - name: Create PR
+        env:
+          GITHUB_TOKEN: "${{ steps.generate_token.outputs.token }}"
+        run: |
+          body="## Description
+
+          * Update \`Policy API\` CRDs.
+
+
+          ---
+          > [!NOTE]
+          > This PR was created by the **Sync Policy API CRDs** job.
+          "
+          gh pr create --title "Update Policy API CRDs" --body "${body}" --head ${branch} --base "main" || true
