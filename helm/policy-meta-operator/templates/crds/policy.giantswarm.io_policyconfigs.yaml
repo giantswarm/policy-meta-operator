@@ -15,8 +15,7 @@ spec:
     listKind: PolicyConfigList
     plural: policyconfigs
     shortNames:
-      - gspol
-      - gspolicy
+      - gspolconfig
     singular: policyconfig
   scope: Cluster
   versions:
