@@ -103,20 +103,25 @@ func InsertPolicyException(ctx context.Context, client *edgedb.Client, policyExc
 	var edgedbException Exception
 
 	// Temporary hard code fields
-	policies := policyException.Spec.Policies
 	targetNames := translateTargetsToEdgedbTypes(policyException.Spec.Targets)[0].Names
 	targetKind := translateTargetsToEdgedbTypes(policyException.Spec.Targets)[0].Kind
 	targetNamespaces := translateTargetsToEdgedbTypes(policyException.Spec.Targets)[0].Namespaces
 	policyExceptionName := policyException.Name
 
 	// Create Policies in edgedb if they don't exist
-	err := createPoliciesIfNonExistent(ctx, client, policies)
+	err := createPoliciesIfNonExistent(ctx, client, policyException.Spec.Policies)
+	if err != nil {
+		return edgedbException, err
+	}
+
+	// Create Targets in edgedb if they don't exist
+	err = createTargetsIfNonExistent(ctx, client, policyException.Spec.Targets)
 	if err != nil {
 		return edgedbException, err
 	}
 
 	params := []interface{}{
-		policies,
+		policyException.Spec.Policies,
 		targetNames,
 		targetNamespaces,
 		targetKind,
@@ -131,6 +136,35 @@ func InsertPolicyException(ctx context.Context, client *edgedb.Client, policyExc
 	)
 
 	return edgedbException, err
+}
+
+//go:embed queries/insertTarget.edgeql
+var insertTargetQuery string
+
+func createTargetsIfNonExistent(ctx context.Context, client *edgedb.Client, targets []policyAPI.Target) error {
+	newTargets := translateTargetsToEdgedbTypes(targets)
+
+	for _, target := range newTargets {
+		var result Target
+
+		params := []interface{}{
+			target.Names,
+			target.Namespaces,
+			target.Kind,
+		}
+
+		err := client.QuerySingle(
+			ctx,
+			insertTargetQuery,
+			&result,
+			params...,
+		)
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
 }
 
 func createPoliciesIfNonExistent(ctx context.Context, client *edgedb.Client, policies []string) error {
