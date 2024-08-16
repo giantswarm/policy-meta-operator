@@ -101,12 +101,7 @@ var insertPolicyExceptionQuery string
 
 func InsertPolicyException(ctx context.Context, client *edgedb.Client, policyException policyAPI.PolicyException) (Exception, error) {
 	var edgedbException Exception
-
-	// Temporary hard code fields
-	targetNames := translateTargetsToEdgedbTypes(policyException.Spec.Targets)[0].Names
-	targetKind := translateTargetsToEdgedbTypes(policyException.Spec.Targets)[0].Kind
-	targetNamespaces := translateTargetsToEdgedbTypes(policyException.Spec.Targets)[0].Namespaces
-	policyExceptionName := policyException.Name
+	var targetIDs []edgedb.UUID
 
 	// Create Policies in edgedb if they don't exist
 	err := createPoliciesIfNonExistent(ctx, client, policyException.Spec.Policies)
@@ -114,18 +109,16 @@ func InsertPolicyException(ctx context.Context, client *edgedb.Client, policyExc
 		return edgedbException, err
 	}
 
-	// Create Targets in edgedb if they don't exist
-	err = createTargetsIfNonExistent(ctx, client, policyException.Spec.Targets)
+	// Create Targets in edgedb if they don't exist, otherwise select them so we can append them to the policy exception
+	targetIDs, err = createTargetsIfNonExistent(ctx, client, policyException.Spec.Targets)
 	if err != nil {
 		return edgedbException, err
 	}
 
 	params := []interface{}{
 		policyException.Spec.Policies,
-		targetNames,
-		targetNamespaces,
-		targetKind,
-		policyExceptionName,
+		targetIDs,
+		policyException.Name,
 	}
 
 	err = client.QuerySingle(
@@ -141,8 +134,9 @@ func InsertPolicyException(ctx context.Context, client *edgedb.Client, policyExc
 //go:embed queries/insertTarget.edgeql
 var insertTargetQuery string
 
-func createTargetsIfNonExistent(ctx context.Context, client *edgedb.Client, targets []policyAPI.Target) error {
+func createTargetsIfNonExistent(ctx context.Context, client *edgedb.Client, targets []policyAPI.Target) ([]edgedb.UUID, error) {
 	newTargets := translateTargetsToEdgedbTypes(targets)
+	var outputIDs []edgedb.UUID
 
 	for _, target := range newTargets {
 		var result Target
@@ -160,11 +154,13 @@ func createTargetsIfNonExistent(ctx context.Context, client *edgedb.Client, targ
 			params...,
 		)
 		if err != nil {
-			return err
+			return outputIDs, err
 		}
+
+		outputIDs = append(outputIDs, result.ID)
 	}
 
-	return nil
+	return outputIDs, nil
 }
 
 func createPoliciesIfNonExistent(ctx context.Context, client *edgedb.Client, policies []string) error {
