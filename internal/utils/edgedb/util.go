@@ -64,26 +64,24 @@ var insertAutomatedExceptionQuery string
 
 func InsertAutomatedException(ctx context.Context, client *edgedb.Client, automatedException policyAPI.AutomatedException) (Exception, error) {
 	var edgedbException Exception
-
-	// Temporary hard code fields
-	policies := automatedException.Spec.Policies
-	targetNames := translateTargetsToEdgedbTypes(automatedException.Spec.Targets)[0].Names
-	targetKind := translateTargetsToEdgedbTypes(automatedException.Spec.Targets)[0].Kind
-	targetNamespaces := translateTargetsToEdgedbTypes(automatedException.Spec.Targets)[0].Namespaces
-	policyExceptionName := automatedException.Name
+	var targetIDs []edgedb.UUID
 
 	// Create Policies in edgedb if they don't exist
-	err := createPoliciesIfNonExistent(ctx, client, policies)
+	err := createPoliciesIfNonExistent(ctx, client, automatedException.Spec.Policies)
+	if err != nil {
+		return edgedbException, err
+	}
+
+	// Create Targets in edgedb if they don't exist, otherwise select them so we can append them to the policy exception
+	targetIDs, err = createTargetsIfNonExistent(ctx, client, automatedException.Spec.Targets)
 	if err != nil {
 		return edgedbException, err
 	}
 
 	params := []interface{}{
-		policies,
-		targetNames,
-		targetNamespaces,
-		targetKind,
-		policyExceptionName,
+		automatedException.Spec.Policies,
+		targetIDs,
+		automatedException,
 	}
 
 	err = client.QuerySingle(
