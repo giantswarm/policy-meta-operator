@@ -1,6 +1,6 @@
 with
     policy_names := <array<str>>$0,
-    target_ids := <array<str>>$1,
+    target_ids := <array<uuid>>$1,
     new_policies := (
       SELECT Policy
       FILTER .name IN array_unpack(policy_names)
@@ -12,13 +12,13 @@ with
 insert PolicyException {
     name := <str>$2,
     policies := new_policies,
-    targets := targets
+    targets := new_targets
 }
 unless conflict on .name
 else (
     update PolicyException
     set {
         policies := new_policies,
-        targets := targets
+        targets := new_targets
     }
 );
