@@ -18,9 +18,6 @@ package controller
 
 import (
 	"context"
-	"fmt"
-	"strconv"
-	"time"
 
 	"github.com/edgedb/edgedb-go"
 
@@ -29,8 +26,6 @@ import (
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/log"
-
-	"github.com/giantswarm/policy-meta-operator/internal/utils"
 )
 
 // AutomatedExceptionReconciler reconciles an AutomatedException object
@@ -44,26 +39,6 @@ func (r *AutomatedExceptionReconciler) Reconcile(ctx context.Context, req ctrl.R
 	_ = log.FromContext(ctx)
 
 	log.Log.Info("Reconciling AutomatedException")
-
-	// Create exception with counter
-	_, err := utils.InsertAutomatedException(ctx, r.EdgeDBClient, req.Name, int64(1), time.Now())
-	if err != nil {
-		log.Log.Error(err, "Error inserting exception in database")
-	}
-
-	// Select users.
-	var automatedExceptions []utils.AutomatedException
-	query := "select AutomatedException{name, last_reconciliation, counter}"
-	err = r.EdgeDBClient.Query(ctx, query, &automatedExceptions)
-	if err != nil {
-		log.Log.Error(err, "error making query")
-	}
-
-	for _, exception := range automatedExceptions {
-		time, _ := exception.LastReconciliation.Get()
-		counter, _ := exception.Counter.Get()
-		log.Log.Info(fmt.Sprintf("Exception: %s\nLast reconciliation: %s\nCounter: %s", exception.Name, time, strconv.FormatInt(counter, 10)))
-	}
 
 	return ctrl.Result{}, nil
 }
