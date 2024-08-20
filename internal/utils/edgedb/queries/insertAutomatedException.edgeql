@@ -9,14 +9,14 @@ with
       SELECT Target
       FILTER .id IN array_unpack(target_ids)
     ),
-insert PolicyException {
+insert AutomatedException {
     name := <str>$2,
     policies := new_policies,
     targets := new_targets
 }
 unless conflict on .name
 else (
-    update PolicyException
+    update AutomatedException
     set {
         policies := new_policies,
         targets := new_targets

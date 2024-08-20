@@ -1,6 +1,6 @@
 select Policy {
   name,
-  defaultPolicyState,
+  mode := .defaultPolicyState,
   automatedExceptions := .<policies[is AutomatedException] {
     targets := (
       select distinct .targets {

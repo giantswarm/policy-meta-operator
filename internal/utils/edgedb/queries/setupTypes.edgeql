@@ -5,8 +5,11 @@ create type Policy {
   create property defaultPolicyState -> str;
 };
 
-create type PolicyConfig extending Policy {
-  create link policyName -> policy;
+create type PolicyConfig {
+  create required property name -> str {
+    create constraint exclusive
+  };
+  create link policyName -> Policy;
   create property policyState -> str;
 };
 
