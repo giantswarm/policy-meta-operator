@@ -40,3 +40,7 @@ helm.sh/chart: {{ include "chart" . | quote }}
 {{ .Values.global.image.registry }}
 {{- end -}}
 {{- end -}}
+
+{{- define "hooks.crdAdoption" -}}
+{{- printf "%s-%s" ( include "resource.default.name" . ) "crd-adoption-hook" | replace "+" "_" | trimSuffix "-" -}}
+{{- end -}}

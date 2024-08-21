@@ -1,0 +1,58 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "hooks.crdAdoption" . }}
+  namespace: {{ .Release.Namespace | quote }}
+  annotations:
+    # create hook dependencies in the right order
+    "helm.sh/hook-weight": "-1"
+    "helm.sh/hook": "pre-install,pre-upgrade"
+    "helm.sh/hook-delete-policy": "before-hook-creation,hook-succeeded"
+spec:
+  template:
+    spec:
+      serviceAccountName: {{ include "hooks.crdAdoption" . }}
+      securityContext:
+        seccompProfile:
+          type: RuntimeDefault
+        runAsNonRoot: true
+        runAsUser: 65534
+        runAsGroup: 65534
+      tolerations:
+      - key: node-role.kubernetes.io/control-plane
+        effect: NoSchedule
+      containers:
+      - name: kubectl
+        image: "{{ default .Values.image.registry (include "global.imageRegistry" . ) }}/giantswarm/docker-kubectl:{{ .Values.kubectl.image.tag }}"
+        command:
+        - sh
+        - -c
+        - |
+          set -o xtrace ; set -o nounset
+
+          # piping stderr to stdout means kubectl's errors are surfaced
+          # in the pod's logs.
+          kubectl label crd policyexceptions.policy.giantswarm.io "app.kubernetes.io/managed-by=Helm"
+          kubectl annotate crd policyexceptions.policy.giantswarm.io "meta.helm.sh/release-name=policy-meta-operator"
+          kubectl annotate crd policyexceptions.policy.giantswarm.io "meta.helm.sh/release-namespace=policy-system"
+        securityContext:
+          seccompProfile:
+            type: RuntimeDefault
+          readOnlyRootFilesystem: true
+          allowPrivilegeEscalation: false
+          privileged: false
+          runAsNonRoot: true
+          runAsUser: 65534
+          runAsGroup: 65534
+          capabilities:
+            drop:
+            - ALL
+        resources:
+          requests:
+            cpu: 100m
+            memory: 220Mi
+          limits:
+            cpu: 100m
+            memory: 220Mi
+      restartPolicy: Never
+  backoffLimit: 4
