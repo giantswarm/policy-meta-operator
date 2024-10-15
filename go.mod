@@ -261,3 +261,6 @@ require (
 	sigs.k8s.io/structured-merge-diff/v4 v4.4.1 // indirect
 	sigs.k8s.io/yaml v1.4.0 // indirect
 )
+
+// From https://github.com/kyverno/kyverno/blob/2cd462570ac092d2101caea95b45b0a27bb55e29/go.mod#L395C1-L395C126
+replace k8s.io/pod-security-admission v0.29.2 => github.com/kyverno/pod-security-admission v0.0.0-20240715131510-7fb54a8d376d
