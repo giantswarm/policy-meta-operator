@@ -29,6 +29,8 @@ import (
 	_ "k8s.io/client-go/plugin/pkg/client/auth"
 
 	"github.com/edgedb/edgedb-go"
+	kyvernoV1 "github.com/kyverno/kyverno/api/kyverno/v1"
+
 	policyAPI "github.com/giantswarm/policy-api/api/v1alpha1"
 	"k8s.io/apimachinery/pkg/runtime"
 	utilruntime "k8s.io/apimachinery/pkg/util/runtime"
@@ -52,6 +54,7 @@ var (
 func init() {
 	utilruntime.Must(clientgoscheme.AddToScheme(scheme))
 	utilruntime.Must(policyAPI.AddToScheme(scheme))
+	utilruntime.Must(kyvernoV1.AddToScheme(scheme))
 
 	//+kubebuilder:scaffold:scheme
 }
