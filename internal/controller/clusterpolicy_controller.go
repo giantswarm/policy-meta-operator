@@ -96,14 +96,10 @@ func extractTargetKinds(kyvernoPolicy kyvernoV1.ClusterPolicy) []string {
 
 	for _, rule := range kyvernoPolicy.Spec.Rules {
 		for _, match := range rule.MatchResources.Any {
-			for _, kind := range match.ResourceDescription.Kinds {
-				targetKinds = append(targetKinds, kind)
-			}
+			targetKinds = append(targetKinds, match.ResourceDescription.Kinds...)
 		}
 		for _, match := range rule.MatchResources.All {
-			for _, kind := range match.ResourceDescription.Kinds {
-				targetKinds = append(targetKinds, kind)
-			}
+			targetKinds = append(targetKinds, match.ResourceDescription.Kinds...)
 		}
 	}
 
