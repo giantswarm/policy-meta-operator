@@ -33,6 +33,7 @@ type KyvernoClusterPolicy struct {
 	Name        string      `edgedb:"name"`
 	RuleNames   []string    `edgedb:"ruleNames"`
 	TargetKinds []string    `edgedb:"targetKinds"`
+	Category    string      `edgedb:"category"`
 }
 
 type Exception struct {

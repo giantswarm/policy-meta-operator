@@ -41,6 +41,7 @@ create type KyvernoClusterPolicy {
   create required property name -> str {
     create constraint exclusive
   };
-  create required property resourceKinds -> array<str>;
+  create required property targetKinds -> array<str>;
   create required property ruleNames -> array<str>;
+  create required property category -> str;
 }
