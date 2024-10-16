@@ -42,6 +42,19 @@ func InsertKyvernoClusterPolicy(ctx context.Context, client *edgedb.Client, name
 	return kyvernoClusterPolicy, err
 }
 
+func DeleteKyvernoClusterPolicy(ctx context.Context, client *edgedb.Client, policyName string) error {
+	var kyvernoClusterPolicy KyvernoClusterPolicy
+
+	err := client.QuerySingle(
+		ctx,
+		"DELETE KyvernoClusterPolicy FILTER .name = <str>$0 LIMIT 1",
+		&kyvernoClusterPolicy,
+		policyName,
+	)
+
+	return err
+}
+
 //go:embed queries/insertPolicy.edgeql
 var insertPolicyQuery string
 
