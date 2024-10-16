@@ -47,12 +47,12 @@ func (r *ClusterPolicyReconciler) Reconcile(ctx context.Context, req ctrl.Reques
 	if err := r.Get(ctx, req.NamespacedName, &clusterPolicy); err != nil {
 		if !errors.IsNotFound(err) {
 			// Error fetching the report
-			log.Log.Error(err, "unable to fetch Policy")
+			log.Log.Error(err, "unable to fetch Kyverno ClusterPolicy")
 		} else {
 			// Policy not found, make sure we don't have it in edgedb either
-			err := edgedbutils.DeletePolicy(ctx, r.EdgeDBClient, req.Name)
+			err := edgedbutils.DeleteKyvernoClusterPolicy(ctx, r.EdgeDBClient, req.Name)
 			if err != nil {
-				log.Log.Error(err, "Error deleting Policy from database")
+				log.Log.Error(err, "Error deleting ClusterPolicy from database")
 			}
 		}
 		return ctrl.Result{}, client.IgnoreNotFound(err)
@@ -64,13 +64,14 @@ func (r *ClusterPolicyReconciler) Reconcile(ctx context.Context, req ctrl.Reques
 
 			policyRuleNames := extractRuleNames(clusterPolicy)
 			policyTargetKinds := extractTargetKinds(clusterPolicy)
+			policyCategory := clusterPolicy.Annotations["policies.kyverno.io/category"]
 
 			if len(policyRuleNames) == 0 || len(policyTargetKinds) == 0 {
 				log.Log.Error(errors.New("Error extracting rule names or target kinds"), fmt.Sprintf("Error extracting rule names or target kinds from Kyverno ClusterPolicy %s", clusterPolicy.Name))
 				return ctrl.Result{}, nil
 			}
 
-			_, err := edgedbutils.InsertKyvernoClusterPolicy(ctx, r.EdgeDBClient, clusterPolicy.Name, policyRuleNames, policyTargetKinds)
+			_, err := edgedbutils.InsertKyvernoClusterPolicy(ctx, r.EdgeDBClient, clusterPolicy.Name, policyRuleNames, policyTargetKinds, policyCategory)
 			if err != nil {
 				log.Log.Error(err, "Error inserting Kyverno ClusterPolicy in database")
 			}
@@ -88,6 +89,10 @@ func extractRuleNames(kyvernoPolicy kyvernoV1.ClusterPolicy) []string {
 		ruleNames = append(ruleNames, rule.Name)
 	}
 
+	for _, autogen := range kyvernoPolicy.Status.Autogen.Rules {
+		ruleNames = append(ruleNames, autogen.Name)
+	}
+
 	return ruleNames
 }
 
@@ -95,6 +100,16 @@ func extractTargetKinds(kyvernoPolicy kyvernoV1.ClusterPolicy) []string {
 	var targetKinds []string
 
 	for _, rule := range kyvernoPolicy.Spec.Rules {
+		for _, match := range rule.MatchResources.Any {
+			targetKinds = append(targetKinds, match.ResourceDescription.Kinds...)
+		}
+		for _, match := range rule.MatchResources.All {
+			targetKinds = append(targetKinds, match.ResourceDescription.Kinds...)
+		}
+	}
+
+	// Duplicate to get target kinds from autogen rules
+	for _, rule := range kyvernoPolicy.Status.Autogen.Rules {
 		for _, match := range rule.MatchResources.Any {
 			targetKinds = append(targetKinds, match.ResourceDescription.Kinds...)
 		}
