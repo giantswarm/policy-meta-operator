@@ -43,5 +43,5 @@ create type KyvernoClusterPolicy {
   };
   create required property targetKinds -> array<str>;
   create required property ruleNames -> array<str>;
-  create required property category -> str;
+  create required property exempted -> bool;
 }

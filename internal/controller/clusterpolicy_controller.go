@@ -39,6 +39,14 @@ type ClusterPolicyReconciler struct {
 	Scheme       *runtime.Scheme
 }
 
+var (
+	//GiantSwarm team label
+	GSTeamLabel = "application.giantswarm.io/team"
+	//Policy API Exemption label
+	//TODO: Move to Policy API
+	PolicyAPIExemptionLabel = "policy.giantswarm.io/giantswarm-exempt"
+)
+
 func (r *ClusterPolicyReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
 	_ = log.FromContext(ctx)
 
@@ -64,14 +72,14 @@ func (r *ClusterPolicyReconciler) Reconcile(ctx context.Context, req ctrl.Reques
 
 			policyRuleNames := extractRuleNames(clusterPolicy)
 			policyTargetKinds := extractTargetKinds(clusterPolicy)
-			policyCategory := clusterPolicy.Annotations["policies.kyverno.io/category"]
+			exempted := isExempted(clusterPolicy)
 
 			if len(policyRuleNames) == 0 || len(policyTargetKinds) == 0 {
 				log.Log.Error(errors.New("Error extracting rule names or target kinds"), fmt.Sprintf("Error extracting rule names or target kinds from Kyverno ClusterPolicy %s", clusterPolicy.Name))
 				return ctrl.Result{}, nil
 			}
 
-			_, err := edgedbutils.InsertKyvernoClusterPolicy(ctx, r.EdgeDBClient, clusterPolicy.Name, policyRuleNames, policyTargetKinds, policyCategory)
+			_, err := edgedbutils.InsertKyvernoClusterPolicy(ctx, r.EdgeDBClient, clusterPolicy.Name, policyRuleNames, policyTargetKinds, exempted)
 			if err != nil {
 				log.Log.Error(err, "Error inserting Kyverno ClusterPolicy in database")
 			}
@@ -80,6 +88,24 @@ func (r *ClusterPolicyReconciler) Reconcile(ctx context.Context, req ctrl.Reques
 	}
 
 	return ctrl.Result{}, nil
+}
+
+func isExempted(clusterPolicy kyvernoV1.ClusterPolicy) bool {
+	exempted := true
+
+	// Check if team label exist
+	if _, ok := clusterPolicy.Labels[GSTeamLabel]; ok {
+		// If team label exist, GS workloads are not exempted (they should pass the policy)
+		exempted = false
+	} else {
+		// If team label doesn't exist, make sure we don't have an exemption for this policy
+		if isExempted, ok := clusterPolicy.Labels[PolicyAPIExemptionLabel]; ok {
+			// Use label value to determine if exempted
+			exempted = isExempted == "true"
+		}
+	}
+
+	return exempted
 }
 
 func extractRuleNames(kyvernoPolicy kyvernoV1.ClusterPolicy) []string {
