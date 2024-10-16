@@ -187,9 +187,10 @@ func main() {
 	}
 
 	if err = (&controller.ClusterPolicyReconciler{
-		Client:       mgr.GetClient(),
-		EdgeDBClient: edgedbClient,
-		Scheme:       mgr.GetScheme(),
+		Client:           mgr.GetClient(),
+		EdgeDBClient:     edgedbClient,
+		Scheme:           mgr.GetScheme(),
+		MaxJitterPercent: maxJitterPercent,
 	}).SetupWithManager(mgr); err != nil {
 		setupLog.Error(err, "unable to create controller", "controller", "KyvernoClusterPolicy")
 		os.Exit(1)
