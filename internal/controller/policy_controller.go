@@ -28,14 +28,16 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/log"
 
+	"github.com/giantswarm/policy-meta-operator/internal/utils"
 	edgedbutils "github.com/giantswarm/policy-meta-operator/internal/utils/edgedb"
 )
 
 // PolicyReconciler reconciles a AutomatedException object
 type PolicyReconciler struct {
 	client.Client
-	EdgeDBClient *edgedb.Client
-	Scheme       *runtime.Scheme
+	EdgeDBClient     *edgedb.Client
+	Scheme           *runtime.Scheme
+	MaxJitterPercent int
 }
 
 func (r *PolicyReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctrl.Result, error) {
@@ -62,7 +64,7 @@ func (r *PolicyReconciler) Reconcile(ctx context.Context, req ctrl.Request) (ctr
 		log.Log.Error(err, "Error inserting Policy in database")
 	}
 
-	return ctrl.Result{}, nil
+	return utils.JitterRequeue(utils.DefaultRequeueDuration, r.MaxJitterPercent, log.Log), nil
 }
 
 // SetupWithManager sets up the controller with the Manager.
