@@ -83,8 +83,8 @@ func main() {
 	var probeAddr string
 	var secureMetrics bool
 	var enableHTTP2 bool
-	// var ctx context.Context
-	// edgedbClient := utils.GetEDGEDBClient(ctx, edgedb.Options{})
+	var maxJitterPercent int
+
 	flag.StringVar(&metricsAddr, "metrics-bind-address", ":8080", "The address the metric endpoint binds to.")
 	flag.StringVar(&probeAddr, "health-probe-bind-address", ":8081", "The address the probe endpoint binds to.")
 	flag.BoolVar(&enableLeaderElection, "leader-elect", false,
@@ -94,6 +94,7 @@ func main() {
 		"If set the metrics endpoint is served securely")
 	flag.BoolVar(&enableHTTP2, "enable-http2", false,
 		"If set, HTTP/2 will be enabled for the metrics and webhook servers")
+	flag.IntVar(&maxJitterPercent, "max-jitter-percent", 10, "Spreads out re-queue interval by +/- this amount to spread load.")
 	opts := zap.Options{
 		Development: true,
 	}
@@ -153,36 +154,40 @@ func main() {
 	}
 
 	if err = (&controller.AutomatedExceptionReconciler{
-		Client:       mgr.GetClient(),
-		EdgeDBClient: edgedbClient,
-		Scheme:       mgr.GetScheme(),
+		Client:           mgr.GetClient(),
+		EdgeDBClient:     edgedbClient,
+		Scheme:           mgr.GetScheme(),
+		MaxJitterPercent: maxJitterPercent,
 	}).SetupWithManager(mgr); err != nil {
 		setupLog.Error(err, "unable to create controller", "controller", "AutomatedException")
 		os.Exit(1)
 	}
 
 	if err = (&controller.PolicyExceptionReconciler{
-		Client:       mgr.GetClient(),
-		EdgeDBClient: edgedbClient,
-		Scheme:       mgr.GetScheme(),
+		Client:           mgr.GetClient(),
+		EdgeDBClient:     edgedbClient,
+		Scheme:           mgr.GetScheme(),
+		MaxJitterPercent: maxJitterPercent,
 	}).SetupWithManager(mgr); err != nil {
 		setupLog.Error(err, "unable to create controller", "controller", "PolicyException")
 		os.Exit(1)
 	}
 
 	if err = (&controller.PolicyReconciler{
-		Client:       mgr.GetClient(),
-		EdgeDBClient: edgedbClient,
-		Scheme:       mgr.GetScheme(),
+		Client:           mgr.GetClient(),
+		EdgeDBClient:     edgedbClient,
+		Scheme:           mgr.GetScheme(),
+		MaxJitterPercent: maxJitterPercent,
 	}).SetupWithManager(mgr); err != nil {
 		setupLog.Error(err, "unable to create controller", "controller", "Policy")
 		os.Exit(1)
 	}
 
 	if err = (&controller.PolicyConfigReconciler{
-		Client:       mgr.GetClient(),
-		EdgeDBClient: edgedbClient,
-		Scheme:       mgr.GetScheme(),
+		Client:           mgr.GetClient(),
+		EdgeDBClient:     edgedbClient,
+		Scheme:           mgr.GetScheme(),
+		MaxJitterPercent: maxJitterPercent,
 	}).SetupWithManager(mgr); err != nil {
 		setupLog.Error(err, "unable to create controller", "controller", "PolicyConfig")
 		os.Exit(1)
