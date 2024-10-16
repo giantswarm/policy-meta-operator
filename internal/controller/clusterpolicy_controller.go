@@ -97,24 +97,46 @@ func extractRuleNames(kyvernoPolicy kyvernoV1.ClusterPolicy) []string {
 }
 
 func extractTargetKinds(kyvernoPolicy kyvernoV1.ClusterPolicy) []string {
+	var targetMap = make(map[string]bool)
 	var targetKinds []string
 
 	for _, rule := range kyvernoPolicy.Spec.Rules {
 		for _, match := range rule.MatchResources.Any {
-			targetKinds = append(targetKinds, match.ResourceDescription.Kinds...)
+			// Deduplicate before storing in targetKinds
+			for _, kind := range match.ResourceDescription.Kinds {
+				if _, ok := targetMap[kind]; !ok {
+					targetMap[kind] = true
+					targetKinds = append(targetKinds, kind)
+				}
+			}
 		}
 		for _, match := range rule.MatchResources.All {
-			targetKinds = append(targetKinds, match.ResourceDescription.Kinds...)
+			for _, kind := range match.ResourceDescription.Kinds {
+				if _, ok := targetMap[kind]; !ok {
+					targetMap[kind] = true
+					targetKinds = append(targetKinds, kind)
+				}
+			}
 		}
 	}
 
 	// Duplicate to get target kinds from autogen rules
 	for _, rule := range kyvernoPolicy.Status.Autogen.Rules {
 		for _, match := range rule.MatchResources.Any {
-			targetKinds = append(targetKinds, match.ResourceDescription.Kinds...)
+			for _, kind := range match.ResourceDescription.Kinds {
+				if _, ok := targetMap[kind]; !ok {
+					targetMap[kind] = true
+					targetKinds = append(targetKinds, kind)
+				}
+			}
 		}
 		for _, match := range rule.MatchResources.All {
-			targetKinds = append(targetKinds, match.ResourceDescription.Kinds...)
+			for _, kind := range match.ResourceDescription.Kinds {
+				if _, ok := targetMap[kind]; !ok {
+					targetMap[kind] = true
+					targetKinds = append(targetKinds, kind)
+				}
+			}
 		}
 	}
 
