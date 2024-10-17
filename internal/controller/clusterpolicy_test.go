@@ -32,13 +32,31 @@ var _ = Describe("Kyverno ClusterPolicy Controller", func() {
 		Expect(err).NotTo(HaveOccurred(), "Failed to unmarshal YAML")
 
 	})
+	Context("When reconciling a Kyverno Cluster Policy", func() {
+		It("should extract rule names", func() {
+			testExtractRuleNamesFunc := controller.ExtractRuleNames
+			expectedRules := []string{"require-drop-all", "adding-capabilities-strict", "autogen-require-drop-all", "autogen-cronjob-require-drop-all", "autogen-adding-capabilities-strict", "autogen-cronjob-adding-capabilities-strict"}
+			ruleNames := testExtractRuleNamesFunc(*clusterPolicy)
 
-	It("should extract rule names", func() {
-		testExtractRuleNamesFunc := controller.ExtractRuleNames
-		expectedRules := []string{"require-drop-all", "adding-capabilities-strict", "autogen-require-drop-all", "autogen-cronjob-require-drop-all", "autogen-adding-capabilities-strict", "autogen-cronjob-adding-capabilities-strict"}
-		ruleNames := testExtractRuleNamesFunc(*clusterPolicy)
+			Expect(ruleNames).To(Equal(expectedRules))
+		})
 
-		Expect(ruleNames).To(Equal(expectedRules))
+		It("should extract target kinds", func() {
+			testExtractTargetKindsFunc := controller.ExtractTargetKinds
+			expectedKinds := []string{"Pod", "DaemonSet", "Deployment", "Job", "ReplicaSet", "ReplicationController", "StatefulSet", "CronJob"}
+			targetKinds := testExtractTargetKindsFunc(*clusterPolicy)
+
+			Expect(targetKinds).To(Equal(expectedKinds))
+		})
+
+		It("should know that GS workloads don't need to be exempted", func() {
+			testShouldExcludeGiantSwarmResources := controller.ShouldExcludeGiantSwarmResources
+
+			shouldExcludeGSResources := testShouldExcludeGiantSwarmResources(*clusterPolicy)
+
+			// We have the team label set, result should be False
+			Expect(shouldExcludeGSResources).To(BeFalse())
+		})
 	})
 
 })

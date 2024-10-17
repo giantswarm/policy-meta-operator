@@ -22,6 +22,7 @@ metadata:
     app.kubernetes.io/name: kyverno-policies
     app.kubernetes.io/part-of: kyverno-policies
     app.kubernetes.io/version: 3.2.3
+    application.giantswarm.io/team: shield
     helm.sh/chart: kyverno-policies-3.2.3
   name: disallow-capabilities-strict
   resourceVersion: "29178"
