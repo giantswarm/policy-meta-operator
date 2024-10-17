@@ -99,14 +99,17 @@ func shouldExcludeGiantSwarmResources(clusterPolicy kyvernoV1.ClusterPolicy) boo
 	if _, ok := clusterPolicy.Labels[GSTeamLabel]; ok {
 		// If team label exists, this policy comes from Giant Swarm, so our workloads are not exempt; they should satisfy the policy, ship an exception, or be excluded within the policy itself.
 		exempted = false
-	} else {
-		// If team label doesn't exist, make sure we don't have an exemption for this policy
-		if isExempted, ok := clusterPolicy.Labels[PolicyAPIExemptionLabel]; ok {
-			// Use label value to determine if exempted
-			exempted = isExempted == "true"
-		}
 	}
-
+	
+	// Check if the policy has a label enabling or disabling GS exemption.
+	if  gsExemptLabelValue, ok := clusterPolicy.Labels[PolicyAPIExemptionLabel]; ok {
+	    gsExempt, err = strconv.ParseBool(gsExemptLabelValue)
+	    if err != nil {
+	        // The label value is garbage. Complain and error out, or default the behavior
+	    }
+	}
+	
+	return gsExempt
 	return exempted
 }
 
