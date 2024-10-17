@@ -29,11 +29,11 @@ type PolicyConfig struct {
 }
 
 type KyvernoClusterPolicy struct {
-	ID          edgedb.UUID `edgedb:"id"`
-	Name        string      `edgedb:"name"`
-	RuleNames   []string    `edgedb:"ruleNames"`
-	TargetKinds []string    `edgedb:"targetKinds"`
-	GiantSwarmExempt    bool        `edgedb:"gsExempt"`
+	ID               edgedb.UUID `edgedb:"id"`
+	Name             string      `edgedb:"name"`
+	RuleNames        []string    `edgedb:"ruleNames"`
+	TargetKinds      []string    `edgedb:"targetKinds"`
+	GiantSwarmExempt bool        `edgedb:"gsExempt"`
 }
 
 type Exception struct {

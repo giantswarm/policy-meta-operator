@@ -2,7 +2,7 @@ insert KyvernoClusterPolicy {
     name := <str>$0,
     ruleNames := <array<str>>$1,
     targetKinds := <array<str>>$2,
-    exempted := <bool>$3,
+    gsExempt := <bool>$3,
 }
 unless conflict on .name
 else (

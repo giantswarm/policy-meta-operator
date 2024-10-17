@@ -19,6 +19,7 @@ package controller
 import (
 	"context"
 	"fmt"
+	"strconv"
 
 	"github.com/edgedb/edgedb-go"
 	"github.com/pingcap/errors"
@@ -74,14 +75,14 @@ func (r *ClusterPolicyReconciler) Reconcile(ctx context.Context, req ctrl.Reques
 
 			policyRuleNames := extractRuleNames(clusterPolicy)
 			policyTargetKinds := extractTargetKinds(clusterPolicy)
-			exempted := isExempted(clusterPolicy)
+			gsExempt := shouldExcludeGiantSwarmResources(clusterPolicy)
 
 			if len(policyRuleNames) == 0 || len(policyTargetKinds) == 0 {
 				log.Log.Error(errors.New("Error extracting rule names or target kinds"), fmt.Sprintf("Error extracting rule names or target kinds from Kyverno ClusterPolicy %s", clusterPolicy.Name))
 				return ctrl.Result{}, nil
 			}
 
-			_, err := edgedbutils.InsertKyvernoClusterPolicy(ctx, r.EdgeDBClient, clusterPolicy.Name, policyRuleNames, policyTargetKinds, exempted)
+			_, err := edgedbutils.InsertKyvernoClusterPolicy(ctx, r.EdgeDBClient, clusterPolicy.Name, policyRuleNames, policyTargetKinds, gsExempt)
 			if err != nil {
 				log.Log.Error(err, "Error inserting Kyverno ClusterPolicy in database")
 			}
@@ -93,24 +94,27 @@ func (r *ClusterPolicyReconciler) Reconcile(ctx context.Context, req ctrl.Reques
 }
 
 func shouldExcludeGiantSwarmResources(clusterPolicy kyvernoV1.ClusterPolicy) bool {
-	exempted := true
+	gsExempt := true
 
 	// Check if team label exist
 	if _, ok := clusterPolicy.Labels[GSTeamLabel]; ok {
 		// If team label exists, this policy comes from Giant Swarm, so our workloads are not exempt; they should satisfy the policy, ship an exception, or be excluded within the policy itself.
-		exempted = false
+		gsExempt = false
 	}
-	
+
 	// Check if the policy has a label enabling or disabling GS exemption.
-	if  gsExemptLabelValue, ok := clusterPolicy.Labels[PolicyAPIExemptionLabel]; ok {
-	    gsExempt, err = strconv.ParseBool(gsExemptLabelValue)
-	    if err != nil {
-	        // The label value is garbage. Complain and error out, or default the behavior
-	    }
+	if gsExemptLabelValue, ok := clusterPolicy.Labels[PolicyAPIExemptionLabel]; ok {
+		var err error
+
+		gsExempt, err = strconv.ParseBool(gsExemptLabelValue)
+		if err != nil {
+			// The label value is garbage. Complain and error out, or default the behavior
+			// Label is probably not set, set default to false
+			gsExempt = false
+		}
 	}
-	
+
 	return gsExempt
-	return exempted
 }
 
 func extractRuleNames(kyvernoPolicy kyvernoV1.ClusterPolicy) []string {
