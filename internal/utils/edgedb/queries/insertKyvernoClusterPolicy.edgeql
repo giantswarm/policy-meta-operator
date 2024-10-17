@@ -10,6 +10,6 @@ else (
     set {
         ruleNames := <array<str>>$1,
         targetKinds := <array<str>>$2,
-        exempted := <bool>$3,
+        gsExempt := <bool>$3,
     }
 );
