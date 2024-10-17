@@ -92,7 +92,7 @@ func (r *ClusterPolicyReconciler) Reconcile(ctx context.Context, req ctrl.Reques
 	return utils.JitterRequeue(utils.DefaultRequeueDuration, r.MaxJitterPercent, log.Log), nil
 }
 
-func isExempted(clusterPolicy kyvernoV1.ClusterPolicy) bool {
+func shouldExcludeGiantSwarmResources(clusterPolicy kyvernoV1.ClusterPolicy) bool {
 	exempted := true
 
 	// Check if team label exist
