@@ -97,7 +97,7 @@ func isExempted(clusterPolicy kyvernoV1.ClusterPolicy) bool {
 
 	// Check if team label exist
 	if _, ok := clusterPolicy.Labels[GSTeamLabel]; ok {
-		// If team label exist, GS workloads are not exempted (they should pass the policy)
+		// If team label exists, this policy comes from Giant Swarm, so our workloads are not exempt; they should satisfy the policy, ship an exception, or be excluded within the policy itself.
 		exempted = false
 	} else {
 		// If team label doesn't exist, make sure we don't have an exemption for this policy
