@@ -109,7 +109,6 @@ func shouldExcludeGiantSwarmResources(clusterPolicy kyvernoV1.ClusterPolicy) boo
 		gsExempt, err = strconv.ParseBool(gsExemptLabelValue)
 		if err != nil {
 			// The label value is garbage. Complain and error out, or default the behavior
-			// Label is probably not set, set default to false
 			gsExempt = false
 		}
 	}
