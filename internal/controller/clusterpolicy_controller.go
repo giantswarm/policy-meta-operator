@@ -85,9 +85,19 @@ func (r *ClusterPolicyReconciler) Reconcile(ctx context.Context, req ctrl.Reques
 			_, err := edgedbutils.InsertKyvernoClusterPolicy(ctx, r.EdgeDBClient, clusterPolicy.Name, policyRuleNames, policyTargetKinds, gsExempt)
 			if err != nil {
 				log.Log.Error(err, "Error inserting Kyverno ClusterPolicy in database")
-			}
 
+				// We should retry if inserting failed
+				return utils.JitterRequeue(utils.DefaultRequeueDuration, r.MaxJitterPercent, log.Log), err
+			}
 		}
+	} else {
+		// Make sure we don't have it in edgedb
+		err := edgedbutils.DeleteKyvernoClusterPolicy(ctx, r.EdgeDBClient, req.Name)
+		if err == nil {
+			log.Log.Info(fmt.Sprintf("Deleted ClusterPolicy %s from database", req.Name))
+		}
+
+		return ctrl.Result{}, nil
 	}
 
 	return utils.JitterRequeue(utils.DefaultRequeueDuration, r.MaxJitterPercent, log.Log), nil
