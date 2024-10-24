@@ -1,0 +1,233 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  annotations:
+    kyverno.io/kubernetes-version: 1.22-1.23
+    kyverno.io/kyverno-version: 1.6.0
+    meta.helm.sh/release-name: kyverno-policies
+    meta.helm.sh/release-namespace: kyverno
+    policies.kyverno.io/category: Pod Security Standards (Restricted)
+    policies.kyverno.io/description: Adding capabilities other than `NET_BIND_SERVICE`
+      is disallowed. In addition, all containers must explicitly drop `ALL` capabilities.
+    policies.kyverno.io/minversion: 1.6.0
+    policies.kyverno.io/severity: medium
+    policies.kyverno.io/subject: Pod
+    policies.kyverno.io/title: Disallow Capabilities (Strict)
+  creationTimestamp: "2024-10-17T12:21:05Z"
+  generation: 1
+  labels:
+    app.kubernetes.io/component: kyverno
+    app.kubernetes.io/instance: kyverno-policies
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: kyverno-policies
+    app.kubernetes.io/part-of: kyverno-policies
+    app.kubernetes.io/version: 3.2.3
+    application.giantswarm.io/team: shield
+    helm.sh/chart: kyverno-policies-3.2.3
+  name: disallow-capabilities-strict
+  resourceVersion: "29178"
+  uid: d9ea5950-8c37-4f14-9373-598a0ff3c54b
+spec:
+  admission: true
+  background: true
+  failurePolicy: Fail
+  rules:
+  - match:
+      any:
+      - resources:
+          kinds:
+          - Pod
+    name: require-drop-all
+    preconditions:
+      all:
+      - key: '{{ request.operation || ''BACKGROUND'' }}'
+        operator: NotEquals
+        value: DELETE
+    skipBackgroundRequests: true
+    validate:
+      foreach:
+      - deny:
+          conditions:
+            all:
+            - key: ALL
+              operator: AnyNotIn
+              value: '{{ element.securityContext.capabilities.drop[] || `[]` }}'
+        list: request.object.spec.[ephemeralContainers, initContainers, containers][]
+      message: Containers must drop `ALL` capabilities.
+  - match:
+      any:
+      - resources:
+          kinds:
+          - Pod
+    name: adding-capabilities-strict
+    preconditions:
+      all:
+      - key: '{{ request.operation || ''BACKGROUND'' }}'
+        operator: NotEquals
+        value: DELETE
+    skipBackgroundRequests: true
+    validate:
+      foreach:
+      - deny:
+          conditions:
+            all:
+            - key: '{{ element.securityContext.capabilities.add[] || `[]` }}'
+              operator: AnyNotIn
+              value:
+              - NET_BIND_SERVICE
+              - ""
+        list: request.object.spec.[ephemeralContainers, initContainers, containers][]
+      message: Any capabilities added other than NET_BIND_SERVICE are disallowed.
+  validationFailureAction: Enforce
+status:
+  autogen:
+    rules:
+    - exclude:
+        resources: {}
+      generate:
+        clone: {}
+        cloneList: {}
+      match:
+        any:
+        - resources:
+            kinds:
+            - DaemonSet
+            - Deployment
+            - Job
+            - ReplicaSet
+            - ReplicationController
+            - StatefulSet
+        resources: {}
+      mutate: {}
+      name: autogen-require-drop-all
+      preconditions:
+        all:
+        - key: '{{ request.operation || ''BACKGROUND'' }}'
+          operator: NotEquals
+          value: DELETE
+      skipBackgroundRequests: true
+      validate:
+        foreach:
+        - deny:
+            conditions:
+              all:
+              - key: ALL
+                operator: AnyNotIn
+                value: '{{ element.securityContext.capabilities.drop[] || `[]` }}'
+          list: request.object.spec.template.spec.[ephemeralContainers, initContainers,
+            containers][]
+        message: Containers must drop `ALL` capabilities.
+    - exclude:
+        resources: {}
+      generate:
+        clone: {}
+        cloneList: {}
+      match:
+        any:
+        - resources:
+            kinds:
+            - CronJob
+        resources: {}
+      mutate: {}
+      name: autogen-cronjob-require-drop-all
+      preconditions:
+        all:
+        - key: '{{ request.operation || ''BACKGROUND'' }}'
+          operator: NotEquals
+          value: DELETE
+      skipBackgroundRequests: true
+      validate:
+        foreach:
+        - deny:
+            conditions:
+              all:
+              - key: ALL
+                operator: AnyNotIn
+                value: '{{ element.securityContext.capabilities.drop[] || `[]` }}'
+          list: request.object.spec.jobTemplate.spec.template.spec.[ephemeralContainers,
+            initContainers, containers][]
+        message: Containers must drop `ALL` capabilities.
+    - exclude:
+        resources: {}
+      generate:
+        clone: {}
+        cloneList: {}
+      match:
+        any:
+        - resources:
+            kinds:
+            - DaemonSet
+            - Deployment
+            - Job
+            - ReplicaSet
+            - ReplicationController
+            - StatefulSet
+        resources: {}
+      mutate: {}
+      name: autogen-adding-capabilities-strict
+      preconditions:
+        all:
+        - key: '{{ request.operation || ''BACKGROUND'' }}'
+          operator: NotEquals
+          value: DELETE
+      skipBackgroundRequests: true
+      validate:
+        foreach:
+        - deny:
+            conditions:
+              all:
+              - key: '{{ element.securityContext.capabilities.add[] || `[]` }}'
+                operator: AnyNotIn
+                value:
+                - NET_BIND_SERVICE
+                - ""
+          list: request.object.spec.template.spec.[ephemeralContainers, initContainers,
+            containers][]
+        message: Any capabilities added other than NET_BIND_SERVICE are disallowed.
+    - exclude:
+        resources: {}
+      generate:
+        clone: {}
+        cloneList: {}
+      match:
+        any:
+        - resources:
+            kinds:
+            - CronJob
+        resources: {}
+      mutate: {}
+      name: autogen-cronjob-adding-capabilities-strict
+      preconditions:
+        all:
+        - key: '{{ request.operation || ''BACKGROUND'' }}'
+          operator: NotEquals
+          value: DELETE
+      skipBackgroundRequests: true
+      validate:
+        foreach:
+        - deny:
+            conditions:
+              all:
+              - key: '{{ element.securityContext.capabilities.add[] || `[]` }}'
+                operator: AnyNotIn
+                value:
+                - NET_BIND_SERVICE
+                - ""
+          list: request.object.spec.jobTemplate.spec.template.spec.[ephemeralContainers,
+            initContainers, containers][]
+        message: Any capabilities added other than NET_BIND_SERVICE are disallowed.
+  conditions:
+  - lastTransitionTime: "2024-10-17T13:03:40Z"
+    message: Ready
+    reason: Succeeded
+    status: "True"
+    type: Ready
+  ready: true
+  rulecount:
+    generate: 0
+    mutate: 0
+    validate: 2
+    verifyimages: 0
+  validatingadmissionpolicy:
+    generated: false
+    message: ""
