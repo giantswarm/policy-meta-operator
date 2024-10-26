@@ -14,10 +14,10 @@ jobs:
 workflows:
   package-and-push-chart-on-tag:
     jobs:
-      # - unit-tests:
-      #     filters:
-      #       tags:
-      #         only: /^v.*/
+      - unit-tests:
+          filters:
+            tags:
+              only: /^v.*/
 
       - architect/go-build:
           name: go-build

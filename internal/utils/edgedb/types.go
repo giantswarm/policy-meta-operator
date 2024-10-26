@@ -28,6 +28,14 @@ type PolicyConfig struct {
 	PolicyState edgedb.OptionalStr `edgedb:"policyState"`
 }
 
+type KyvernoClusterPolicy struct {
+	ID               edgedb.UUID `edgedb:"id"`
+	Name             string      `edgedb:"name"`
+	RuleNames        []string    `edgedb:"ruleNames"`
+	TargetKinds      []string    `edgedb:"targetKinds"`
+	GiantSwarmExempt bool        `edgedb:"gsExempt"`
+}
+
 type Exception struct {
 	ID       edgedb.UUID `edgedb:"id"`
 	Targets  []Target    `edgedb:"targets"`

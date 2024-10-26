@@ -24,6 +24,38 @@ func translateTargetsToEdgedbTypes(targets []policyAPI.Target) []Target {
 	return edgedbTarget
 }
 
+//go:embed queries/insertKyvernoClusterPolicy.edgeql
+var insertKyvernoClusterPolicyQuery string
+
+func InsertKyvernoClusterPolicy(ctx context.Context, client *edgedb.Client, name string, ruleNames []string, targetKinds []string, gsExempt bool) (KyvernoClusterPolicy, error) {
+	var kyvernoClusterPolicy KyvernoClusterPolicy
+
+	err := client.QuerySingle(
+		ctx,
+		insertKyvernoClusterPolicyQuery,
+		&kyvernoClusterPolicy,
+		name,
+		ruleNames,
+		targetKinds,
+		gsExempt,
+	)
+
+	return kyvernoClusterPolicy, err
+}
+
+func DeleteKyvernoClusterPolicy(ctx context.Context, client *edgedb.Client, policyName string) error {
+	var kyvernoClusterPolicy KyvernoClusterPolicy
+
+	err := client.QuerySingle(
+		ctx,
+		"DELETE KyvernoClusterPolicy FILTER .name = <str>$0 LIMIT 1",
+		&kyvernoClusterPolicy,
+		policyName,
+	)
+
+	return err
+}
+
 //go:embed queries/insertPolicy.edgeql
 var insertPolicyQuery string
 
