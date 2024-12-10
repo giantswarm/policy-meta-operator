@@ -9,7 +9,7 @@ require (
 	github.com/google/uuid v1.6.0
 	github.com/kyverno/kyverno v1.12.6
 	github.com/onsi/ginkgo/v2 v2.22.0
-	github.com/onsi/gomega v1.36.0
+	github.com/onsi/gomega v1.36.1
 	github.com/pingcap/errors v0.11.4
 	gopkg.in/yaml.v2 v2.4.0
 	k8s.io/apimachinery v0.31.3
