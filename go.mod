@@ -11,7 +11,7 @@ require (
 	github.com/onsi/ginkgo/v2 v2.22.0
 	github.com/onsi/gomega v1.36.1
 	github.com/pingcap/errors v0.11.4
-	gopkg.in/yaml.v2 v2.4.0
+	gopkg.in/yaml.v3 v3.0.1
 	k8s.io/apimachinery v0.31.4
 	k8s.io/client-go v0.31.4
 	sigs.k8s.io/controller-runtime v0.19.3
@@ -253,7 +253,7 @@ require (
 	google.golang.org/protobuf v1.35.2 // indirect
 	gopkg.in/inf.v0 v0.9.1 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
-	gopkg.in/yaml.v3 v3.0.1 // indirect
+	gopkg.in/yaml.v2 v2.4.0 // indirect
 	k8s.io/api v0.31.4 // indirect
 	k8s.io/apiextensions-apiserver v0.31.3 // indirect
 	k8s.io/component-base v0.31.3 // indirect
