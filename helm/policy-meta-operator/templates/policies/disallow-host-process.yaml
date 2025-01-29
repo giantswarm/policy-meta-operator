@@ -1,0 +1,8 @@
+apiVersion: policy.giantswarm.io/v1alpha1
+kind: Policy
+metadata:
+  name: disallow-host-process
+  labels:
+    {{- include "labels.common" . | nindent 4 }}
+spec:
+  defaultPolicyState: "enforce"
