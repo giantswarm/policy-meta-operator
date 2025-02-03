@@ -71,7 +71,7 @@ func (r *ClusterPolicyReconciler) Reconcile(ctx context.Context, req ctrl.Reques
 
 	if clusterPolicy.Spec.ValidationFailureAction.Enforce() {
 		if clusterPolicy.HasValidate() {
-			log.Log.Info("Kyverno ClusterPolicy is in enforce mode and has validating rules, adding it to edgedb")
+			// log.Log.Info("Kyverno ClusterPolicy is in enforce mode and has validating rules, adding it to edgedb")
 
 			policyRuleNames := extractRuleNames(clusterPolicy)
 			policyTargetKinds := extractTargetKinds(clusterPolicy)
@@ -84,10 +84,12 @@ func (r *ClusterPolicyReconciler) Reconcile(ctx context.Context, req ctrl.Reques
 
 			_, err := edgedbutils.InsertKyvernoClusterPolicy(ctx, r.EdgeDBClient, clusterPolicy.Name, policyRuleNames, policyTargetKinds, gsExempt)
 			if err != nil {
-				log.Log.Error(err, "Error inserting Kyverno ClusterPolicy in database")
+				log.Log.Error(err, "Error inserting Kyverno ClusterPolicy to database")
 
 				// We should retry if inserting failed
 				return utils.JitterRequeue(utils.DefaultRequeueDuration, r.MaxJitterPercent, log.Log), err
+			} else {
+				log.Log.Info(fmt.Sprintf("Inserted Kyverno ClusterPolicy %s to database", clusterPolicy.Name))
 			}
 		}
 	} else {

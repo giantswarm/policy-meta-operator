@@ -13,6 +13,7 @@ import (
 const (
 	ComponentName = "policy-meta-operator"
 	ManagedBy     = "app.kubernetes.io/managed-by"
+	GSPolicy      = "policy.giantswarm.io/policy"
 )
 
 //go:embed getPolicyManifestQuery.edgeql
@@ -65,6 +66,7 @@ func CreatePolicyManifest(ctx context.Context, client *edgedb.Client, args strin
 	// Set Labels
 	policyManifest.Labels = make(map[string]string)
 	policyManifest.Labels[ManagedBy] = ComponentName
+	policyManifest.Labels[GSPolicy] = edgedbPolman.Name
 
 	// Set Exceptions
 	policyManifest.Spec.Exceptions = translateEdgedbExceptions(edgedbPolman.PolicyExceptions)

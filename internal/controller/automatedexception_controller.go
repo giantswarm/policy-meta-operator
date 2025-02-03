@@ -51,7 +51,7 @@ func (r *AutomatedExceptionReconciler) Reconcile(ctx context.Context, req ctrl.R
 			log.Log.Error(err, "unable to fetch AutomatedException")
 		} else {
 			// AutomatedException not found, make sure we don't have it in edgedb either
-			err := edgedbutils.DeletePolicyException(ctx, r.EdgeDBClient, req.Name)
+			err := edgedbutils.DeleteAutomatedException(ctx, r.EdgeDBClient, req.Name)
 			if err != nil {
 				log.Log.Error(err, "Error deleting AutomatedException from database")
 			}
