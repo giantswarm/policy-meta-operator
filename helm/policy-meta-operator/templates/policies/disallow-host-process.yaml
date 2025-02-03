@@ -3,6 +3,8 @@ kind: Policy
 metadata:
   name: disallow-host-process
   labels:
-    {{- include "labels.common" . | nindent 4 }}
+    {{- include "hooks.labels" . | nindent 4 }}
+  annotations:
+    {{- include "hooks.annotations" . | nindent 4 }}
 spec:
   defaultPolicyState: "enforce"
