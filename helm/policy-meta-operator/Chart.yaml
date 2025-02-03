@@ -4,6 +4,6 @@ name: policy-meta-operator
 description: Policy Meta Operator Helm chart for Giant Swarm
 home: https://github.com/giantswarm/policy-meta-operator
 icon: https://s.giantswarm.io/app-icons/giantswarm/1/light.svg
-version: 0.0.1
+version: 0.0.2
 annotations:
   application.giantswarm.io/team: shield
