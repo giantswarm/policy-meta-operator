@@ -113,7 +113,7 @@ func InsertAutomatedException(ctx context.Context, client *edgedb.Client, automa
 	params := []interface{}{
 		automatedException.Spec.Policies,
 		targetIDs,
-		automatedException,
+		automatedException.Name,
 	}
 
 	err = client.QuerySingle(
@@ -233,6 +233,19 @@ func DeletePolicyException(ctx context.Context, client *edgedb.Client, policyExc
 		"DELETE PolicyException FILTER .name = <str>$0 LIMIT 1",
 		&edgedbException,
 		policyExceptionName,
+	)
+
+	return err
+}
+
+func DeleteAutomatedException(ctx context.Context, client *edgedb.Client, automatedExceptionName string) error {
+	var edgedbException Exception
+
+	err := client.QuerySingle(
+		ctx,
+		"DELETE AutomatedException FILTER .name = <str>$0 LIMIT 1",
+		&edgedbException,
+		automatedExceptionName,
 	)
 
 	return err
