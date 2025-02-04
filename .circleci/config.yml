@@ -85,6 +85,7 @@ workflows:
         context: architect
         app_name: policy-meta-operator
         app_collection_repo: aws-app-collection
+        app_namespace: policy-system
         requires:
         - push-policy-meta-operator-chart-to-control-plane-catalog
         filters:
@@ -98,6 +99,7 @@ workflows:
         context: architect
         app_name: policy-meta-operator
         app_collection_repo: azure-app-collection
+        app_namespace: policy-system
         requires:
         - push-policy-meta-operator-chart-to-control-plane-catalog
         filters:
@@ -111,6 +113,7 @@ workflows:
         context: architect
         app_name: policy-meta-operator
         app_collection_repo: capa-app-collection
+        app_namespace: policy-system
         requires:
         - push-policy-meta-operator-chart-to-control-plane-catalog
         filters:
@@ -124,6 +127,7 @@ workflows:
         context: architect
         app_name: policy-meta-operator
         app_collection_repo: vsphere-app-collection
+        app_namespace: policy-system
         requires:
         - push-policy-meta-operator-chart-to-control-plane-catalog
         filters:
@@ -137,6 +141,7 @@ workflows:
         context: architect
         app_name: policy-meta-operator
         app_collection_repo: cloud-director-app-collection
+        app_namespace: policy-system
         requires:
         - push-policy-meta-operator-chart-to-control-plane-catalog
         filters:
