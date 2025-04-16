@@ -44,10 +44,10 @@ func (r *PolicyManifestReconciler) Reconcile(ctx context.Context) error {
 				log.Log.Error(err, "unable to create or update PolicyManifest")
 				return err
 			} else {
-				switch {
-				case op == "created":
+				switch op {
+				case "created":
 					log.Log.Info(fmt.Sprintf("Created PolicyManifest %s", policyManifest.Name))
-				case op == "updated":
+				case "updated":
 					log.Log.Info(fmt.Sprintf("Updated PolicyManifest %s", policyManifest.Name))
 				}
 			}

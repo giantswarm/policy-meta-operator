@@ -22,8 +22,19 @@ var _ = Describe("Kyverno ClusterPolicy Controller", func() {
 
 	BeforeEach(func() {
 		// Load the Cluster Policy YAML file
-		filePath := filepath.Join("..", "..", "tests", "manifests", "disallow-capabilities-strict.yaml")
-		yamlFile, err := os.ReadFile(filePath)
+		// Define a safe base directory
+		baseDir, err := filepath.Abs(filepath.Join("..", ".."))
+		if err != nil {
+			Fail("Failed to get absolute path for base directory")
+			return
+		}
+		expectedFilePath := filepath.Join(baseDir, "tests", "manifests", "disallow-capabilities-strict.yaml")
+
+		// Clean the path
+		cleanPath := filepath.Clean(expectedFilePath)
+
+		// Safe to read the file
+		yamlFile, err := os.ReadFile(cleanPath)
 		Expect(err).NotTo(HaveOccurred(), "Failed to read YAML file")
 
 		// Parse the YAML into the clusterPolicy object
