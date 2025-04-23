@@ -149,7 +149,7 @@ func extractTargetKinds(kyvernoPolicy kyvernoV1.ClusterPolicy) []string {
 	for _, rule := range kyvernoPolicy.Spec.Rules {
 		for _, match := range rule.MatchResources.Any {
 			// Deduplicate before storing in targetKinds
-			for _, kind := range match.ResourceDescription.Kinds {
+			for _, kind := range match.Kinds {
 				if _, ok := targetMap[kind]; !ok {
 					targetMap[kind] = true
 					targetKinds = append(targetKinds, kind)
@@ -157,7 +157,7 @@ func extractTargetKinds(kyvernoPolicy kyvernoV1.ClusterPolicy) []string {
 			}
 		}
 		for _, match := range rule.MatchResources.All {
-			for _, kind := range match.ResourceDescription.Kinds {
+			for _, kind := range match.Kinds {
 				if _, ok := targetMap[kind]; !ok {
 					targetMap[kind] = true
 					targetKinds = append(targetKinds, kind)
@@ -169,7 +169,7 @@ func extractTargetKinds(kyvernoPolicy kyvernoV1.ClusterPolicy) []string {
 	// Duplicate to get target kinds from autogen rules
 	for _, rule := range kyvernoPolicy.Status.Autogen.Rules {
 		for _, match := range rule.MatchResources.Any {
-			for _, kind := range match.ResourceDescription.Kinds {
+			for _, kind := range match.Kinds {
 				if _, ok := targetMap[kind]; !ok {
 					targetMap[kind] = true
 					targetKinds = append(targetKinds, kind)
@@ -177,7 +177,7 @@ func extractTargetKinds(kyvernoPolicy kyvernoV1.ClusterPolicy) []string {
 			}
 		}
 		for _, match := range rule.MatchResources.All {
-			for _, kind := range match.ResourceDescription.Kinds {
+			for _, kind := range match.Kinds {
 				if _, ok := targetMap[kind]; !ok {
 					targetMap[kind] = true
 					targetKinds = append(targetKinds, kind)
