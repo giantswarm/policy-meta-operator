@@ -1,6 +1,5 @@
-CVE-2025-22869 until=2025-05-16 # golang.org/x/crypto@v0.31.0
 CVE-2024-48921 until=2025-06-07 # github.com/kyverno/kyverno@v1.12.6
 CVE-2025-29778 until=2025-06-07 # github.com/kyverno/kyverno@v1.12.6
-CVE-2025-27144 until=2025-05-16 # github.com/go-jose/go-jose/v3@v3.0.3
+CVE-2025-27144 until=2025-06-15 # github.com/go-jose/go-jose/v3@v3.0.3
 CVE-2025-46342 until=2025-06-07 # github.com/kyverno/kyverno@v1.12.6
 CVE-2025-46569 until=2025-06-07 # github.com/open-policy-agent/opa@v0.70.0
