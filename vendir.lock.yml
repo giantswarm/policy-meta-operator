@@ -2,10 +2,10 @@ apiVersion: vendir.k14s.io/v1alpha1
 directories:
 - contents:
   - git:
-      commitTitle: Release v0.0.5 (#49)
-      sha: 4bea96422c560ac7c9d39d29674c02c03403f459
+      commitTitle: Release v0.0.6 (#99)...
+      sha: 6cc7a66d1a1c471e66ec6d4ac77a89e7e38f254e
       tags:
-      - v0.0.5
+      - v0.0.6
     path: .
   path: helm/policy-meta-operator/templates/crds
 kind: LockConfig
