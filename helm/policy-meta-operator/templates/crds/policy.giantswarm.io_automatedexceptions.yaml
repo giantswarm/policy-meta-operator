@@ -19,7 +19,20 @@ spec:
     singular: automatedexception
   scope: Namespaced
   versions:
-    - name: v1alpha1
+    - additionalPrinterColumns:
+        - jsonPath: .spec.targets[].namespaces
+          name: Namespaces
+          type: string
+        - jsonPath: .spec.targets[].kind
+          name: Kind
+          type: string
+        - jsonPath: .spec.targets[].names
+          name: Names
+          type: string
+        - jsonPath: .spec.policies
+          name: Policies
+          type: string
+      name: v1alpha1
       schema:
         openAPIV3Schema:
           description: AutomatedException is the Schema for the automatedexceptions API

@@ -20,7 +20,11 @@ spec:
     singular: policy
   scope: Cluster
   versions:
-    - name: v1alpha1
+    - additionalPrinterColumns:
+        - jsonPath: .spec.defaultPolicyState
+          name: Mode
+          type: string
+      name: v1alpha1
       schema:
         openAPIV3Schema:
           description: Policy is the Schema for the Policies API
@@ -59,3 +63,4 @@ spec:
           type: object
       served: true
       storage: true
+      subresources: {}
