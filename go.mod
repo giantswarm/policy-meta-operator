@@ -5,7 +5,7 @@ go 1.24
 toolchain go1.24.5
 
 require (
-	github.com/edgedb/edgedb-go v0.17.2
+	github.com/edgedb/edgedb-go v1.4.0
 	github.com/giantswarm/policy-api v0.0.5
 	github.com/go-logr/logr v1.4.3
 	github.com/google/uuid v1.6.0
