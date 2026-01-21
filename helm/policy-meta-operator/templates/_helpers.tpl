@@ -22,6 +22,22 @@ app.kubernetes.io/instance: {{ .Release.Name | quote }}
 {{- end -}}
 
 {{/*
+Hook Annotations
+*/}}
+{{- define "hooks.annotations" -}}
+helm.sh/hook: post-install
+meta.helm.sh/release-name: {{ .Release.Name | quote }}
+meta.helm.sh/release-namespace: {{ .Release.Namespace | quote}}
+{{- end -}}
+
+{{/*
+Hook Labels
+*/}}
+{{- define "hooks.labels" -}}
+{{ include "labels.common" . }}
+{{- end -}}
+
+{{/*
 Common labels
 */}}
 {{- define "labels.common" -}}
