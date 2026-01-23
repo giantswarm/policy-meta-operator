@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Resolve updated code linter findings.
+- Use AppVersion for image tag defaulting.
 
 ## [0.0.3] - 2025-02-04
 

@@ -40,3 +40,10 @@ helm.sh/chart: {{ include "chart" . | quote }}
 {{ .Values.global.image.registry }}
 {{- end -}}
 {{- end -}}
+
+{{/*
+Define image tag.
+*/}}
+{{- define "image.tag" -}}
+{{- .Values.image.tag | default .Chart.AppVersion -}}
+{{- end -}}
