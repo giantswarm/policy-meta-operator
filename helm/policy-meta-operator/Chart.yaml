@@ -1,5 +1,5 @@
 apiVersion: v2
-appVersion: 0.0.1
+appVersion: 0.0.3
 name: policy-meta-operator
 description: Policy Meta Operator Helm chart for Giant Swarm
 home: https://github.com/giantswarm/policy-meta-operator
