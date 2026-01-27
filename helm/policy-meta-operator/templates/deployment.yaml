@@ -60,7 +60,7 @@ spec:
                 name: {{ .Values.edgedb.passwordSecret.name }}
       containers:
       - name: {{ include "resource.default.name" . }}
-        image: "{{ default .Values.image.registry (include "global.imageRegistry" . ) }}/{{ .Values.image.name }}:{{ .Chart.Version }}"
+        image: "{{ default .Values.image.registry (include "global.imageRegistry" . ) }}/{{ .Values.image.name }}:{{ include "image.tag" . }}"
         env:
         - name: EDGEDB_HOST
           value: {{ .Values.edgedb.host | quote }}
