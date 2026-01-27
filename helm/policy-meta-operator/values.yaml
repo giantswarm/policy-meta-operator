@@ -36,7 +36,7 @@ resources:
 image:
   registry: gsoci.azurecr.io
   name: giantswarm/policy-meta-operator
-  tag: v0.0.1
+  tag: ""  # Defaults to Chart.AppVersion if empty
   pullPolicy: IfNotPresent
 
 edgedb:
