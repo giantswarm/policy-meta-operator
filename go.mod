@@ -12,9 +12,9 @@ require (
 	github.com/onsi/gomega v1.42.0
 	github.com/pingcap/errors v0.11.4
 	gopkg.in/yaml.v3 v3.0.1
-	k8s.io/apimachinery v0.35.1
+	k8s.io/apimachinery v0.36.2
 	k8s.io/client-go v0.35.1
-	sigs.k8s.io/controller-runtime v0.23.1
+	sigs.k8s.io/controller-runtime v0.24.1
 )
 
 require (
