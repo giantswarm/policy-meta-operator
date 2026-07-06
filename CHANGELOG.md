@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Migrate chart metadata annotations to OCI-compatible format.
+- Build the binary only once in CI and copy it into the image instead of rebuilding inside the Dockerfile.
 
 ## [0.0.4] - 2026-01-27
 
