@@ -6,10 +6,24 @@ CVE-2025-29778 until=2026-02-13 # github.com/kyverno/kyverno@v1.12.6
 CVE-2025-46342 until=2026-02-13 # github.com/kyverno/kyverno@v1.12.6
 CVE-2025-47281 until=2026-02-13 # github.com/kyverno/kyverno@v1.12.6
 CVE-2026-22703 until=2026-02-13 # github.com/sigstore/cosign/v2@v2.4.1
-CVE-2021-43668 until=2026-02-13 # github.com/syndtr/goleveldb@v1.0.1-0.20220721030215-126854af5e6d
+CVE-2021-43668 until=2026-11-04 # github.com/syndtr/goleveldb@v1.0.1-0.20220721030215-126854af5e6d - no fixed release upstream
 CVE-2026-23991 until=2026-02-26 # github.com/theupdateframework/go-tuf/v2@v2.0.2
 CVE-2026-23992 until=2026-02-26 # github.com/theupdateframework/go-tuf/v2@v2.0.2
 CVE-2026-24117 until=2026-02-25 # github.com/sigstore/rekor@v1.3.7
 CVE-2026-23831 until=2026-02-25 # github.com/sigstore/rekor@v1.3.7
 CVE-2026-24137 until=2026-02-25 # github.com/sigstore/sigstore@v1.10.3
 CVE-2026-24686 until=2026-02-26 # github.com/theupdateframework/go-tuf/v2@v2.0.2
+
+# Transitive via kyverno; fixed versions require a major upgrade that kyverno does not yet support.
+CVE-2026-40179 until=2026-11-04 # github.com/prometheus/prometheus@v0.51.0
+CVE-2026-42154 until=2026-11-04 # github.com/prometheus/prometheus@v0.51.0
+CVE-2023-37264 until=2026-11-04 # github.com/tektoncd/pipeline@v0.65.0
+CVE-2026-25542 until=2026-11-04 # github.com/tektoncd/pipeline@v0.65.0
+CVE-2026-33022 until=2026-11-04 # github.com/tektoncd/pipeline@v0.65.0
+CVE-2026-40923 until=2026-11-04 # github.com/tektoncd/pipeline@v0.65.0
+CVE-2026-40924 until=2026-11-04 # github.com/tektoncd/pipeline@v0.65.0
+CVE-2026-33343 until=2026-11-04 # go.etcd.io/etcd/v3@v3.6.8 - only a pre-release contains the fix
+CVE-2026-33413 until=2026-11-04 # go.etcd.io/etcd/v3@v3.6.8 - only a pre-release contains the fix
+CVE-2026-44283 until=2026-11-04 # go.etcd.io/etcd/v3@v3.6.8 - only a pre-release contains the fix
+CVE-2026-59818 until=2026-11-04 # go.etcd.io/etcd/v3@v3.6.8 - only a pre-release contains the fix
+CVE-2024-23332 until=2026-11-04 # github.com/notaryproject/notation-go@v1.3.2
