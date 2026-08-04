@@ -1,5 +1,5 @@
 CVE-2025-22872 until=2026-02-13 # golang.org/x/net@v0.37.0
-CVE-2025-66564 until=2026-02-06 # github.com/sigstore/timestamp-authority@v1.2.3
+CVE-2025-66564 until=2026-11-04 # github.com/sigstore/timestamp-authority@v1.2.9 - no fix in the v1 line
 CVE-2025-66506 until=2026-02-06 # github.com/sigstore/fulcio@v1.6.5
 CVE-2024-48921 until=2026-02-13 # github.com/kyverno/kyverno@v1.12.6
 CVE-2025-29778 until=2026-02-13 # github.com/kyverno/kyverno@v1.12.6
@@ -27,3 +27,10 @@ CVE-2026-33413 until=2026-11-04 # go.etcd.io/etcd/v3@v3.6.8 - only a pre-release
 CVE-2026-44283 until=2026-11-04 # go.etcd.io/etcd/v3@v3.6.8 - only a pre-release contains the fix
 CVE-2026-59818 until=2026-11-04 # go.etcd.io/etcd/v3@v3.6.8 - only a pre-release contains the fix
 CVE-2024-23332 until=2026-11-04 # github.com/notaryproject/notation-go@v1.3.2
+
+# Already on the newest release of their major line; the fix exists only in a later major.
+CVE-2025-47290 until=2026-11-04 # github.com/containerd/containerd@v1.7.34 - fixed in 2.1.1 only
+CVE-2025-47291 until=2026-11-04 # github.com/containerd/containerd@v1.7.34 - fixed in 2.0.5+/2.1.0+ only
+CVE-2026-48978 until=2026-11-04 # oras.land/oras-go@v1.2.7 - fixed in v2 (2.6.1) only
+CVE-2026-24122 until=2026-11-04 # github.com/sigstore/cosign/v2@v2.6.4 - no fixed release yet
+CVE-2026-49835 until=2026-11-04 # github.com/sigstore/timestamp-authority@v1.2.9 - no fix in the v1 line
