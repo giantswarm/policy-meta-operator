@@ -7,7 +7,7 @@ require (
 	github.com/giantswarm/policy-api v0.0.9
 	github.com/go-logr/logr v1.4.4
 	github.com/google/uuid v1.6.0
-	github.com/kyverno/kyverno v1.18.1
+	github.com/kyverno/kyverno v1.18.2
 	github.com/onsi/ginkgo/v2 v2.32.0
 	github.com/onsi/gomega v1.42.1
 	github.com/pingcap/errors v0.11.4
@@ -163,7 +163,7 @@ require (
 	github.com/klauspost/compress v1.18.6 // indirect
 	github.com/kyverno/api v0.0.1-alpha.2.0.20260129144402-7b64bcf2b1f7 // indirect
 	github.com/kyverno/kyverno-json v0.0.4-0.20240730143747-aade3d42fc0e // indirect
-	github.com/kyverno/sdk v0.0.0-20260403020150-29a100fa834c // indirect
+	github.com/kyverno/sdk v0.0.0-20260529121714-3c70db82e2e4 // indirect
 	github.com/lestrrat-go/blackmagic v1.0.4 // indirect
 	github.com/lestrrat-go/dsig v1.0.0 // indirect
 	github.com/lestrrat-go/dsig-secp256k1 v1.0.0 // indirect
