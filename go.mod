@@ -8,12 +8,12 @@ require (
 	github.com/go-logr/logr v1.4.4
 	github.com/google/uuid v1.6.0
 	github.com/kyverno/kyverno v1.18.2
-	github.com/onsi/ginkgo/v2 v2.32.0
+	github.com/onsi/ginkgo/v2 v2.32.1
 	github.com/onsi/gomega v1.42.1
 	github.com/pingcap/errors v0.11.4
 	gopkg.in/yaml.v3 v3.0.1
-	k8s.io/apimachinery v0.36.2
-	k8s.io/client-go v0.36.2
+	k8s.io/apimachinery v0.36.3
+	k8s.io/client-go v0.36.3
 	sigs.k8s.io/controller-runtime v0.24.1
 )
 
@@ -278,7 +278,7 @@ require (
 	gopkg.in/inf.v0 v0.9.1 // indirect
 	gopkg.in/ini.v1 v1.67.3 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
-	k8s.io/api v0.36.2 // indirect
+	k8s.io/api v0.36.3 // indirect
 	k8s.io/apiextensions-apiserver v0.36.2 // indirect
 	k8s.io/component-base v0.36.2 // indirect
 	k8s.io/klog/v2 v2.140.0 // indirect
@@ -310,7 +310,7 @@ replace github.com/go-jose/go-jose/v3 => github.com/go-jose/go-jose/v3 v3.0.5
 
 replace github.com/sigstore/fulcio => github.com/sigstore/fulcio v1.8.8
 
-replace github.com/containerd/containerd/v2 => github.com/containerd/containerd/v2 v2.2.5
+replace github.com/containerd/containerd/v2 => github.com/containerd/containerd/v2 v2.3.3
 
 replace github.com/containerd/containerd => github.com/containerd/containerd v1.7.34
 
@@ -328,8 +328,6 @@ replace github.com/sigstore/rekor => github.com/sigstore/rekor v1.5.3
 
 replace github.com/sigstore/sigstore-go => github.com/sigstore/sigstore-go v1.3.0
 
-replace github.com/sigstore/timestamp-authority => github.com/sigstore/timestamp-authority v1.2.9
-
 replace github.com/sigstore/timestamp-authority/v2 => github.com/sigstore/timestamp-authority/v2 v2.1.3
 
 replace github.com/ulikunitz/xz => github.com/ulikunitz/xz v0.5.16
@@ -345,7 +343,5 @@ replace go.opentelemetry.io/otel/exporters/otlp/otlpmetric/otlpmetrichttp => go.
 replace go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracehttp => go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracehttp v1.45.0
 
 replace golang.org/x/text => golang.org/x/text v0.40.0
-
-replace oras.land/oras-go => oras.land/oras-go v1.2.7
 
 replace oras.land/oras-go/v2 => oras.land/oras-go/v2 v2.6.2

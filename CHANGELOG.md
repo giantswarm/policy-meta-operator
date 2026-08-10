@@ -15,6 +15,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Migrate chart metadata annotations to OCI-compatible format.
 - Build the binary only once in CI and copy it into the image instead of rebuilding inside the Dockerfile.
+- Update `github.com/onsi/ginkgo/v2` to v2.32.1 and the k8s modules to v0.36.3.
+- Update the `github.com/containerd/containerd/v2` security pin to v2.3.3.
+
+### Removed
+
+- Drop the stale `oras.land/oras-go` and `github.com/sigstore/timestamp-authority` v1 `replace` pins, which no longer resolve to anything in the module graph.
 
 ## [0.0.4] - 2026-01-27
 
