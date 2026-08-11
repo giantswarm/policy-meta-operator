@@ -328,8 +328,6 @@ replace github.com/sigstore/rekor => github.com/sigstore/rekor v1.5.3
 
 replace github.com/sigstore/sigstore-go => github.com/sigstore/sigstore-go v1.3.0
 
-replace github.com/sigstore/timestamp-authority => github.com/sigstore/timestamp-authority v1.2.9
-
 replace github.com/sigstore/timestamp-authority/v2 => github.com/sigstore/timestamp-authority/v2 v2.1.3
 
 replace github.com/ulikunitz/xz => github.com/ulikunitz/xz v0.5.16
