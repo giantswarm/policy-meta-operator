@@ -6,9 +6,9 @@ import (
 
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
-	"gopkg.in/yaml.v3"
 	logf "sigs.k8s.io/controller-runtime/pkg/log"
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"
+	"sigs.k8s.io/yaml"
 
 	"github.com/giantswarm/policy-meta-operator/internal/controller"
 
@@ -37,7 +37,12 @@ var _ = Describe("Kyverno ClusterPolicy Controller", func() {
 		yamlFile, err := os.ReadFile(cleanPath)
 		Expect(err).NotTo(HaveOccurred(), "Failed to read YAML file")
 
-		// Parse the YAML into the clusterPolicy object
+		// Parse the YAML into the clusterPolicy object.
+		//
+		// This has to go through sigs.k8s.io/yaml, which converts YAML to JSON
+		// before unmarshalling. Kyverno's API types carry only `json` tags, so
+		// gopkg.in/yaml.v3 would look for a `matchresources` key and leave
+		// Rule.MatchResources (json:"match") zero-valued.
 		clusterPolicy = &kyvernoV1.ClusterPolicy{}
 		err = yaml.Unmarshal(yamlFile, clusterPolicy)
 		Expect(err).NotTo(HaveOccurred(), "Failed to unmarshal YAML")

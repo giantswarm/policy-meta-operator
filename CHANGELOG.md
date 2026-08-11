@@ -22,6 +22,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Drop the stale `oras.land/oras-go` and `github.com/sigstore/timestamp-authority` v1 `replace` pins, which no longer resolve to anything in the module graph.
 
+### Fixed
+
+- Decode the ClusterPolicy test fixture with `sigs.k8s.io/yaml` instead of `gopkg.in/yaml.v3`, so Kyverno's `json`-tagged API fields are populated and the `extractTargetKinds` and `shouldExcludeGiantSwarmResources` specs pass again.
+
 ## [0.0.4] - 2026-01-27
 
 ### Changed
