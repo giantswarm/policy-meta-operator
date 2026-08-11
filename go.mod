@@ -346,6 +346,4 @@ replace go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracehttp => go.op
 
 replace golang.org/x/text => golang.org/x/text v0.40.0
 
-replace oras.land/oras-go => oras.land/oras-go v1.2.7
-
 replace oras.land/oras-go/v2 => oras.land/oras-go/v2 v2.6.2
