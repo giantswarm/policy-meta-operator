@@ -310,7 +310,7 @@ replace github.com/go-jose/go-jose/v3 => github.com/go-jose/go-jose/v3 v3.0.5
 
 replace github.com/sigstore/fulcio => github.com/sigstore/fulcio v1.8.8
 
-replace github.com/containerd/containerd/v2 => github.com/containerd/containerd/v2 v2.3.3
+replace github.com/containerd/containerd/v2 => github.com/containerd/containerd/v2 v2.3.4
 
 replace github.com/containerd/containerd => github.com/containerd/containerd v1.7.34
 
