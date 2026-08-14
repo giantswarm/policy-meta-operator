@@ -312,8 +312,6 @@ replace github.com/sigstore/fulcio => github.com/sigstore/fulcio v1.8.8
 
 replace github.com/containerd/containerd/v2 => github.com/containerd/containerd/v2 v2.3.4
 
-replace github.com/containerd/containerd => github.com/containerd/containerd v1.7.34
-
 replace github.com/go-git/go-billy/v5 => github.com/go-git/go-billy/v5 v5.9.1
 
 replace github.com/go-git/go-git/v5 => github.com/go-git/go-git/v5 v5.19.2
