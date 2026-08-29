@@ -4,7 +4,7 @@ go 1.26.0
 
 require (
 	github.com/edgedb/edgedb-go v0.17.2
-	github.com/giantswarm/policy-api v0.0.9
+	github.com/giantswarm/policy-api v0.0.11
 	github.com/go-logr/logr v1.4.4
 	github.com/google/uuid v1.6.0
 	github.com/kyverno/kyverno v1.18.2
@@ -267,7 +267,7 @@ require (
 	golang.org/x/term v0.45.0 // indirect
 	golang.org/x/text v0.40.0 // indirect
 	golang.org/x/time v0.15.0 // indirect
-	golang.org/x/tools v0.47.0 // indirect
+	golang.org/x/tools v0.48.0 // indirect
 	gomodules.xyz/jsonpatch/v2 v2.5.0 // indirect
 	google.golang.org/api v0.286.0 // indirect
 	google.golang.org/genproto/googleapis/api v0.0.0-20260526163538-3dc84a4a5aaa // indirect
