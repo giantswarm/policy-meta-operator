@@ -1,20 +1,5 @@
-CVE-2025-22872 until=2026-02-13 # golang.org/x/net@v0.37.0
 CVE-2025-66564 until=2026-11-04 # github.com/sigstore/timestamp-authority@v1.2.9 - no fix in the v1 line
-CVE-2025-66506 until=2026-02-06 # github.com/sigstore/fulcio@v1.6.5
-CVE-2024-48921 until=2026-02-13 # github.com/kyverno/kyverno@v1.12.6
-CVE-2025-29778 until=2026-02-13 # github.com/kyverno/kyverno@v1.12.6
-CVE-2025-46342 until=2026-02-13 # github.com/kyverno/kyverno@v1.12.6
-CVE-2025-47281 until=2026-02-13 # github.com/kyverno/kyverno@v1.12.6
-CVE-2026-22703 until=2026-02-13 # github.com/sigstore/cosign/v2@v2.4.1
 CVE-2021-43668 until=2026-11-04 # github.com/syndtr/goleveldb@v1.0.1-0.20220721030215-126854af5e6d - no fixed release upstream
-CVE-2026-23991 until=2026-02-26 # github.com/theupdateframework/go-tuf/v2@v2.0.2
-CVE-2026-23992 until=2026-02-26 # github.com/theupdateframework/go-tuf/v2@v2.0.2
-CVE-2026-24117 until=2026-02-25 # github.com/sigstore/rekor@v1.3.7
-CVE-2026-23831 until=2026-02-25 # github.com/sigstore/rekor@v1.3.7
-CVE-2026-24137 until=2026-02-25 # github.com/sigstore/sigstore@v1.10.3
-CVE-2026-24686 until=2026-02-26 # github.com/theupdateframework/go-tuf/v2@v2.0.2
-
-# Transitive via kyverno; fixed versions require a major upgrade that kyverno does not yet support.
 CVE-2026-40179 until=2026-11-04 # github.com/prometheus/prometheus@v0.51.0
 CVE-2026-42154 until=2026-11-04 # github.com/prometheus/prometheus@v0.51.0
 CVE-2023-37264 until=2026-11-04 # github.com/tektoncd/pipeline@v0.65.0
@@ -27,10 +12,15 @@ CVE-2026-33413 until=2026-11-04 # go.etcd.io/etcd/v3@v3.6.8 - only a pre-release
 CVE-2026-44283 until=2026-11-04 # go.etcd.io/etcd/v3@v3.6.8 - only a pre-release contains the fix
 CVE-2026-59818 until=2026-11-04 # go.etcd.io/etcd/v3@v3.6.8 - only a pre-release contains the fix
 CVE-2024-23332 until=2026-11-04 # github.com/notaryproject/notation-go@v1.3.2
-
-# Already on the newest release of their major line; the fix exists only in a later major.
 CVE-2025-47290 until=2026-11-04 # github.com/containerd/containerd@v1.7.34 - fixed in 2.1.1 only
 CVE-2025-47291 until=2026-11-04 # github.com/containerd/containerd@v1.7.34 - fixed in 2.0.5+/2.1.0+ only
 CVE-2026-48978 until=2026-11-04 # oras.land/oras-go@v1.2.7 - fixed in v2 (2.6.1) only
 CVE-2026-24122 until=2026-11-04 # github.com/sigstore/cosign/v2@v2.6.4 - no fixed release yet
 CVE-2026-49835 until=2026-11-04 # github.com/sigstore/timestamp-authority@v1.2.9 - no fix in the v1 line
+CVE-2026-81092 until=2026-10-04 # github.com/mark3labs/mcp-go@v0.43.2
+CVE-2026-56854 until=2026-10-04 # golang.org/x/crypto@v0.54.0
+CVE-2026-56855 until=2026-10-04 # golang.org/x/crypto@v0.54.0
+CVE-2026-84304 until=2026-10-04 # google.golang.org/grpc@v1.82.1
+CVE-2026-84303 until=2026-10-04 # google.golang.org/grpc@v1.82.1
+CVE-2026-56865 until=2026-10-04 # golang.org/x/mod@v0.38.0
+CVE-2026-56864 until=2026-10-04 # golang.org/x/mod@v0.38.0
