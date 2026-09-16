@@ -52,6 +52,10 @@ func (r *PolicyManifestReconciler) Reconcile(ctx context.Context) error {
 				}
 			}
 		}
-		time.Sleep(30 * time.Second)
+		select {
+		case <-ctx.Done():
+			return nil
+		case <-time.After(30 * time.Second):
+		}
 	}
 }
