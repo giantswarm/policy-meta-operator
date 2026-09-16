@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Build the binary only once in CI and copy it into the image instead of rebuilding inside the Dockerfile.
 - Update `github.com/onsi/ginkgo/v2` to v2.32.1 and the k8s modules to v0.36.3.
 - Update the `github.com/containerd/containerd/v2` security pin to v2.3.3.
+- Pass the signal handler context to the PolicyManifest routine so it stops when the manager shuts down.
 
 ### Removed
 
@@ -24,6 +25,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- Replace the deprecated Kyverno `AddToScheme` and controller-runtime `Requeue` calls, and regenerate `values.schema.json`, so `pre-commit` passes again.
 - Decode the ClusterPolicy test fixture with `sigs.k8s.io/yaml` instead of `gopkg.in/yaml.v3`, so Kyverno's `json`-tagged API fields are populated and the `extractTargetKinds` and `shouldExcludeGiantSwarmResources` specs pass again.
 
 ## [0.0.4] - 2026-01-27

@@ -54,7 +54,7 @@ var (
 func init() {
 	utilruntime.Must(clientgoscheme.AddToScheme(scheme))
 	utilruntime.Must(policyAPI.AddToScheme(scheme))
-	utilruntime.Must(kyvernoV1.AddToScheme(scheme))
+	utilruntime.Must(kyvernoV1.Install(scheme))
 
 	//+kubebuilder:scaffold:scheme
 }
@@ -207,12 +207,14 @@ func main() {
 	}
 	//+kubebuilder:scaffold:builder
 
+	ctx := ctrl.SetupSignalHandler()
+
 	go func() {
 		if err := (&controller.PolicyManifestReconciler{
 			Client:       mgr.GetClient(),
 			EdgeDBClient: edgedbClient,
 			Scheme:       mgr.GetScheme(),
-		}).Reconcile(context.Background()); err != nil {
+		}).Reconcile(ctx); err != nil {
 			setupLog.Error(err, "error reconciling PolicyManifest")
 		}
 	}()
@@ -227,7 +229,7 @@ func main() {
 	}
 
 	setupLog.Info("starting manager")
-	if err := mgr.Start(ctrl.SetupSignalHandler()); err != nil {
+	if err := mgr.Start(ctx); err != nil {
 		setupLog.Error(err, "problem running manager")
 		os.Exit(1)
 	}
