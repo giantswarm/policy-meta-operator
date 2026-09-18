@@ -22,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 
 - Drop the stale `oras.land/oras-go` and `github.com/sigstore/timestamp-authority` v1 `replace` pins, which no longer resolve to anything in the module graph.
+- Drop `smoke-tests-cluster-type` from `.ats/main.yaml`. app-test-suite 1.0 removed the per-test-type cluster selectors, and the CircleCI job now passes `--cluster-type` itself.
 
 ### Fixed
 
