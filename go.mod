@@ -329,7 +329,7 @@ replace github.com/sigstore/timestamp-authority/v2 => github.com/sigstore/timest
 
 replace github.com/ulikunitz/xz => github.com/ulikunitz/xz v0.5.16
 
-replace github.com/yuin/goldmark => github.com/yuin/goldmark v1.8.6
+replace github.com/yuin/goldmark/v2 => github.com/yuin/goldmark/v2 v2.1.5
 
 replace go.mongodb.org/mongo-driver => go.mongodb.org/mongo-driver v1.17.10
 
