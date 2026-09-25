@@ -1,0 +1,10 @@
+apiVersion: policy.giantswarm.io/v1alpha1
+kind: Policy
+metadata:
+  name: disallow-capabilities
+  labels:
+    {{- include "hooks.labels" . | nindent 4 }}
+  annotations:
+    {{- include "hooks.annotations" . | nindent 4 }}
+spec:
+  defaultPolicyState: "enforce"
