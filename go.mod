@@ -4,7 +4,7 @@ go 1.26.6
 
 require (
 	github.com/edgedb/edgedb-go v0.17.2
-	github.com/giantswarm/policy-api v0.0.12
+	github.com/giantswarm/policy-api v0.1.0
 	github.com/go-logr/logr v1.4.4
 	github.com/google/uuid v1.6.0
 	github.com/kyverno/kyverno v1.19.1
