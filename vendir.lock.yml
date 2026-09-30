@@ -2,10 +2,10 @@ apiVersion: vendir.k14s.io/v1alpha1
 directories:
 - contents:
   - git:
-      commitTitle: 'feat: add status to PolicyException (#199)...'
-      sha: 3c7345518f8b24cb51038310d1805be06438106b
+      commitTitle: 'fix(nancy): remediate nancy findings (#203)...'
+      sha: 357725cdd1278cc3704a31b4420c29111b5e0005
       tags:
-      - v0.1.0
+      - v0.1.2
     path: .
   path: helm/policy-meta-operator/templates/crds
 kind: LockConfig
