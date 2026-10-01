@@ -4,7 +4,7 @@ go 1.26.6
 
 require (
 	github.com/edgedb/edgedb-go v0.17.2
-	github.com/giantswarm/policy-api v0.0.12
+	github.com/giantswarm/policy-api v0.1.2
 	github.com/go-logr/logr v1.4.4
 	github.com/google/uuid v1.6.0
 	github.com/kyverno/kyverno v1.19.1
@@ -122,16 +122,16 @@ require (
 	github.com/go-openapi/strfmt v0.27.0 // indirect
 	github.com/go-openapi/swag v0.26.1 // indirect
 	github.com/go-openapi/swag/cmdutils v0.27.0 // indirect
-	github.com/go-openapi/swag/conv v0.28.0 // indirect
+	github.com/go-openapi/swag/conv v0.29.2 // indirect
 	github.com/go-openapi/swag/fileutils v0.28.0 // indirect
 	github.com/go-openapi/swag/jsonname v0.26.1 // indirect
-	github.com/go-openapi/swag/jsonutils v0.28.0 // indirect
+	github.com/go-openapi/swag/jsonutils v0.29.2 // indirect
 	github.com/go-openapi/swag/loading v0.28.0 // indirect
 	github.com/go-openapi/swag/mangling v0.28.0 // indirect
 	github.com/go-openapi/swag/netutils v0.27.0 // indirect
-	github.com/go-openapi/swag/pools v0.28.0 // indirect
+	github.com/go-openapi/swag/pools v0.29.2 // indirect
 	github.com/go-openapi/swag/stringutils v0.28.0 // indirect
-	github.com/go-openapi/swag/typeutils v0.28.0 // indirect
+	github.com/go-openapi/swag/typeutils v0.29.2 // indirect
 	github.com/go-openapi/swag/yamlutils v0.28.0 // indirect
 	github.com/go-openapi/validate v0.26.3 // indirect
 	github.com/go-piv/piv-go/v2 v2.6.0 // indirect
