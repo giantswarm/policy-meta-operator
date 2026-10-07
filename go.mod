@@ -345,8 +345,14 @@ replace oras.land/oras-go/v2 => oras.land/oras-go/v2 v2.6.2
 
 replace go.etcd.io/etcd/v3 v3.6.8 => go.etcd.io/etcd/v3 v3.7.1
 
-replace go.opentelemetry.io/otel/exporters/otlp/otlptrace v1.43.0 => go.opentelemetry.io/otel/exporters/otlp/otlptrace v1.46.0
+replace (
+	go.opentelemetry.io/otel/exporters/otlp/otlptrace v1.43.0 => go.opentelemetry.io/otel/exporters/otlp/otlptrace v1.46.0
+	go.opentelemetry.io/otel/exporters/otlp/otlptrace v1.44.0 => go.opentelemetry.io/otel/exporters/otlp/otlptrace v1.47.0
+)
 
-replace go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracegrpc v1.43.0 => go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracegrpc v1.46.0
+replace (
+	go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracegrpc v1.43.0 => go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracegrpc v1.46.0
+	go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracegrpc v1.44.0 => go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracegrpc v1.47.0
+)
 
 replace google.golang.org/grpc v1.82.1 => google.golang.org/grpc v1.83.2
