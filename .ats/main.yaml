@@ -1,1 +1,6 @@
+# The operator needs a Gel (EdgeDB) server before it can start, so the
+# pre-hook deploys one and installs the chart itself.
 skip-steps: [functional, upgrade]
+
+app-tests-skip-app-deploy: true
+app-tests-pre-hook: .ats/pre-hook.sh
