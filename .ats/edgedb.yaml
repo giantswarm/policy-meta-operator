@@ -1,0 +1,61 @@
+# A standalone Gel (EdgeDB) server for the chart tests: the operator exits at
+# startup when it cannot reach one. Production runs the same image from
+# giantswarm/gel-app with a Postgres backend; without GEL_SERVER_BACKEND_DSN the
+# server bootstraps its bundled Postgres in the data directory.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: edgedb
+  labels:
+    app.kubernetes.io/name: edgedb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: edgedb
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: edgedb
+    spec:
+      # The `edgedb` Service would inject EDGEDB_PORT=tcp://..., which the
+      # entrypoint reads as its port (edgedb/edgedb-docker#69).
+      enableServiceLinks: false
+      containers:
+        - name: gel
+          image: gsoci.azurecr.io/giantswarm/gel:7.0
+          env:
+            - name: GEL_SERVER_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: edgedb-server-password
+                  key: password
+            - name: GEL_SERVER_TLS_CERT_MODE
+              value: generate_self_signed
+          ports:
+            - containerPort: 5656
+              name: gel
+          readinessProbe:
+            httpGet:
+              path: /server/status/ready
+              port: 5656
+              scheme: HTTPS
+            periodSeconds: 5
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/gel/data
+      volumes:
+        - name: data
+          emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: edgedb
+spec:
+  selector:
+    app.kubernetes.io/name: edgedb
+  ports:
+    - port: 5656
+      targetPort: gel
+      name: gel
