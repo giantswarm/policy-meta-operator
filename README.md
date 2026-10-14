@@ -1,11 +1,11 @@
-[![CircleCI](https://dl.circleci.com/status-badge/img/gh/giantswarm/{APP-NAME}/tree/main.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/giantswarm/{APP-NAME}/tree/main)
+[![CircleCI](https://dl.circleci.com/status-badge/img/gh/giantswarm/policy-meta-operator/tree/main.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/giantswarm/policy-meta-operator/tree/main)
 
 [Read me after cloning this template (GS staff only)](https://handbook.giantswarm.io/docs/dev-and-releng/app-developer-processes/adding_app_to_appcatalog/)
 
-# {APP-NAME} chart
+# policy-meta-operator chart
 
-Giant Swarm offers a {APP-NAME} App which can be installed in workload clusters.
-Here we define the {APP-NAME} chart with its templates and default configuration.
+Giant Swarm offers a policy-meta-operator App which can be installed in workload clusters.
+Here we define the policy-meta-operator chart with its templates and default configuration.
 
 **What is this app?**
 
@@ -64,7 +64,3 @@ Some apps have restrictions on how they can be deployed.
 Not following these limitations will most likely result in a broken deployment.
 
 - _add limitation_
-
-## Credit
-
-- {APP HELM REPOSITORY}
