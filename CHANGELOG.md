@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Build the binary only once in CI and copy it into the image instead of rebuilding inside the Dockerfile.
 - Update `github.com/onsi/ginkgo/v2` to v2.32.1 and the k8s modules to v0.36.3.
 - Update the `github.com/containerd/containerd/v2` security pin to v2.3.3.
+- Update `golang.org/x/net` to v0.61.0 to fix CVE-2026-78659, CVE-2026-78660, CVE-2026-78669, CVE-2026-97032 and CVE-2026-78663.
 - Pass the signal handler context to the PolicyManifest routine so it stops when the manager shuts down.
 
 ### Removed
