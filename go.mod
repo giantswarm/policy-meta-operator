@@ -311,7 +311,7 @@ replace github.com/containerd/containerd/v2 => github.com/containerd/containerd/
 
 replace github.com/containerd/containerd => github.com/containerd/containerd v1.7.36
 
-replace github.com/go-git/go-billy/v5 => github.com/go-git/go-billy/v5 v5.9.1
+replace github.com/go-git/go-billy/v5 => github.com/go-git/go-billy/v5 v5.9.2
 
 replace github.com/go-git/go-git/v5 => github.com/go-git/go-git/v5 v5.19.2
 
