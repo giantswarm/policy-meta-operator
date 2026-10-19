@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Build the binary only once in CI and copy it into the image instead of rebuilding inside the Dockerfile.
 - Update `github.com/onsi/ginkgo/v2` to v2.32.1 and the k8s modules to v0.36.3.
 - Update the `github.com/containerd/containerd/v2` security pin to v2.3.3.
+- Update `golang.org/x/net` to v0.61.0 to fix CVE-2026-78659, CVE-2026-78660, CVE-2026-78669, CVE-2026-97032 and CVE-2026-78663.
 - Pass the signal handler context to the PolicyManifest routine so it stops when the manager shuts down.
 
 ### Removed
@@ -25,6 +26,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- Run the chart tests against a Gel (EdgeDB) server: an app-test-suite pre-hook deploys one, creates the `edgedb-server-password` and `edgedb-tls` secrets and installs the chart, which cannot start without them. Drop `smoke-tests-cluster-type` from `.ats/main.yaml`, which app-test-suite 1.x rejects.
 - Replace the deprecated Kyverno `AddToScheme` and controller-runtime `Requeue` calls, and regenerate `values.schema.json`, so `pre-commit` passes again.
 - Decode the ClusterPolicy test fixture with `sigs.k8s.io/yaml` instead of `gopkg.in/yaml.v3`, so Kyverno's `json`-tagged API fields are populated and the `extractTargetKinds` and `shouldExcludeGiantSwarmResources` specs pass again.
 
