@@ -2,10 +2,10 @@ apiVersion: vendir.k14s.io/v1alpha1
 directories:
 - contents:
   - git:
-      commitTitle: 'feat: add status to PolicyException (#199)...'
-      sha: 3c7345518f8b24cb51038310d1805be06438106b
+      commitTitle: 'chore: align files according to platform standards (#220)...'
+      sha: 05f72d5b01b60bb0578317e3fb85ad5fb0ca089b
       tags:
-      - v0.1.0
+      - v0.1.5
     path: .
   path: helm/policy-meta-operator/templates/crds
 kind: LockConfig
