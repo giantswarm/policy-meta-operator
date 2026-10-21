@@ -1,66 +1,42 @@
 [![CircleCI](https://dl.circleci.com/status-badge/img/gh/giantswarm/policy-meta-operator/tree/main.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/giantswarm/policy-meta-operator/tree/main)
 
-[Read me after cloning this template (GS staff only)](https://handbook.giantswarm.io/docs/dev-and-releng/app-developer-processes/adding_app_to_appcatalog/)
+# policy-meta-operator
 
-# policy-meta-operator chart
-
-Giant Swarm offers a policy-meta-operator App which can be installed in workload clusters.
-Here we define the policy-meta-operator chart with its templates and default configuration.
-
-**What is this app?**
-
-**Why did we add it?**
-
-**Who can use it?**
+`policy-meta-operator` is a Kubernetes operator that indexes the policy landscape of a cluster into a [Gel](https://github.com/geldata/gel) (formerly EdgeDB) graph database.
+It watches enforcing Kyverno `ClusterPolicy` resources and the [Policy API](https://github.com/giantswarm/policy-api) `Policy`, `PolicyConfig`, `PolicyException` and `AutomatedException` resources, mirrors them into the database, and every 30 seconds writes one `PolicyManifest` per policy that aggregates the policy's enforcement mode and every `PolicyException` and `AutomatedException` that targets it.
+Those manifests give other Giant Swarm security components a single, queryable view of which workloads are exempt from which policy, without each of them re-reading Kyverno and Policy API objects.
 
 ## Installing
 
-There are several ways to install this app onto a workload cluster.
-
-- [Using GitOps to instantiate the App](https://docs.giantswarm.io/advanced/gitops/apps/)
-- [Using our web interface](https://docs.giantswarm.io/platform-overview/web-interface/app-platform/#installing-an-app).
-- By creating an [App resource](https://docs.giantswarm.io/use-the-api/management-api/crd/apps.application.giantswarm.io/) in the management cluster as explained in [Getting started with App Platform](https://docs.giantswarm.io/getting-started/app-platform/).
+The operator is part of Giant Swarm's internal security platform and is not offered as a managed app to customers.
+It requires a reachable Gel server (Giant Swarm runs [gel-app](https://github.com/giantswarm/gel-app)) and the Policy API CRDs, which are vendored into the chart from [policy-api](https://github.com/giantswarm/policy-api) via [`vendir.yml`](vendir.yml).
+Deploy it like any other Giant Swarm app with a [Flux HelmRelease](https://docs.giantswarm.io/tutorials/fleet-management/app-platform/deploy-app-helmrelease/) or by [creating an App resource](https://docs.giantswarm.io/tutorials/continuous-deployment/apps/add-appcr/).
 
 ## Configuring
 
-### values.yaml
-
-**This is an example of a values file you could upload using our web interface.**
+The only values that normally need changing are the Gel connection settings; the operator exits at startup if it cannot connect.
+The password and TLS certificate are read from Secrets in the release namespace.
 
 ```yaml
 # values.yaml
-
+edgedb:
+  host: edgedb
+  port: 5656
+  user: edgedb
+  passwordSecret:
+    name: edgedb-server-password
+  tlsSecret:
+    name: edgedb-tls
 ```
 
-### Sample App CR and ConfigMap for the management cluster
+See our [full reference on how to configure apps](https://docs.giantswarm.io/tutorials/fleet-management/app-platform/app-configuration/) for more details.
 
-If you have access to the Kubernetes API on the management cluster, you could create
-the App CR and ConfigMap directly.
+## Development
 
-Here is an example that would install the app to
-workload cluster `abc12`:
+Run `make test-unit` for the Ginkgo unit tests.
+The chart tests in `tests/ats` deploy a standalone Gel server first (see [`.ats/edgedb.yaml`](.ats/edgedb.yaml)) because the operator cannot start without one.
 
-```yaml
-# appCR.yaml
+## Credit
 
-```
-
-```yaml
-# user-values-configmap.yaml
-
-```
-
-See our [full reference on how to configure apps](https://docs.giantswarm.io/getting-started/app-platform/app-configuration/) for more details.
-
-## Compatibility
-
-This app has been tested to work with the following workload cluster release versions:
-
-- _add release version_
-
-## Limitations
-
-Some apps have restrictions on how they can be deployed.
-Not following these limitations will most likely result in a broken deployment.
-
-- _add limitation_
+- [Gel](https://github.com/geldata/gel) and the [edgedb-go](https://github.com/edgedb/edgedb-go) client.
+- [Kyverno](https://github.com/kyverno/kyverno), whose `ClusterPolicy` resources are indexed.
