@@ -74,8 +74,6 @@ github.com/Azure/go-autorest/tracing v0.6.0/go.mod h1:+vhtPC754Xsa23ID7GlGsrdKBp
 github.com/AzureAD/microsoft-authentication-library-for-go v1.8.0 h1:Nljr4q1GRA/5vCrMONS+g4u4LRHNgOXVSh3O43J2CnI=
 github.com/AzureAD/microsoft-authentication-library-for-go v1.8.0/go.mod h1:Y33QHnf0FfdVewFFISOGe20mkZbxX4H839o955/PoeI=
 github.com/BurntSushi/toml v0.3.1/go.mod h1:xHWCNGjB5oqiDr8zfno3MHue2Ht5sIBksp03qcyfWMU=
-github.com/IGLOU-EU/go-wildcard v1.0.3 h1:r8T46+8/9V1STciXJomTWRpPEv4nGJATDbJkdU0Nou0=
-github.com/IGLOU-EU/go-wildcard v1.0.3/go.mod h1:/qeV4QLmydCbwH0UMQJmXDryrFKJknWi/jjO8IiuQfY=
 github.com/Masterminds/semver/v3 v3.4.0 h1:Zog+i5UMtVoCU8oKka5P7i9q9HgrJeGzI9SA1Xbatp0=
 github.com/Masterminds/semver/v3 v3.4.0/go.mod h1:4V+yj/TJE1HU9XfppCwVMZq3I84lprf4nC11bSS5beM=
 github.com/Microsoft/go-winio v0.6.2 h1:F2VQgta7ecxGYO8k3ZZz3RS8fVIXVxONVUPlNERoyfY=
@@ -513,8 +511,8 @@ github.com/kylelemons/godebug v1.1.0 h1:RPNrshWIDI6G2gRW9EHilWtl7Z6Sb1BR0xunSBf0
 github.com/kylelemons/godebug v1.1.0/go.mod h1:9/0rRGxNHcop5bhtWyNeEfOS8JIWk580+fNqagV/RAw=
 github.com/kyverno/api v0.0.1-alpha.3.0.20260723090831-fb2785727f98 h1:wGbyqQNc5wnHXq73aclvBje80lQvYDnqZCF967m+zEU=
 github.com/kyverno/api v0.0.1-alpha.3.0.20260723090831-fb2785727f98/go.mod h1:fldpQuQfCtqRNffZAS6pvS8gdizji0Y/rFCnoQ+Bay4=
-github.com/kyverno/kyverno v1.19.1 h1:/MkgFii3/VlQfKR1JpC9tVwNNVNQTt2S4U6qCsafsTU=
-github.com/kyverno/kyverno v1.19.1/go.mod h1:j4oc847WUsfY16WBCgjYuVL/syUP8YTOZoR3AabOQ2E=
+github.com/kyverno/kyverno v1.19.2 h1:U530Y14Nvqsdije864ofWiKUI96dhPuxjBtFqUg0yEs=
+github.com/kyverno/kyverno v1.19.2/go.mod h1:xheyG+W5zAvasOu8P1joSxtCt/saJY8hQ6S4SugDQLM=
 github.com/lestrrat-go/blackmagic v1.0.4 h1:IwQibdnf8l2KoO+qC3uT4OaTWsW7tuRQXy9TRN9QanA=
 github.com/lestrrat-go/blackmagic v1.0.4/go.mod h1:6AWFyKNNj0zEXQYfTMPfZrAXUWUfTIZ5ECEUEJaijtw=
 github.com/lestrrat-go/dsig v1.2.1 h1:MwxzZhE4+4fguHi+uDALKVlC3Cn+O1QU1Q/F8D7hVIc=
