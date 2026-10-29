@@ -2,10 +2,10 @@ apiVersion: vendir.k14s.io/v1alpha1
 directories:
 - contents:
   - git:
-      commitTitle: 'chore: align files according to platform standards (#224)...'
-      sha: 6b33fb809d60cab720370be7e2632fe6a5d66d45
+      commitTitle: 'fix(nancy): remediate nancy findings (#226)...'
+      sha: 0a56bc458a47d16b29f8757c91aaa2d94d43998b
       tags:
-      - v0.1.9
+      - v0.1.11
     path: .
   path: helm/policy-meta-operator/templates/crds
 kind: LockConfig
