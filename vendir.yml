@@ -6,7 +6,7 @@ directories:
   - path: .
     git:
       url: https://github.com/giantswarm/policy-api
-      ref: v0.1.14
+      ref: v0.1.15
     includePaths:
       - crds/**
     newRootPath: crds/

@@ -2,10 +2,11 @@ apiVersion: vendir.k14s.io/v1alpha1
 directories:
 - contents:
   - git:
-      commitTitle: 'chore: align files according to platform standards (#229)...'
-      sha: f6d1807080bc779806e2b566fad497187edf7d52
+      commitTitle: 'fix(deps): update module sigs.k8s.io/controller-tools to v0.23.0
+        (#196)...'
+      sha: 77b077c26623bde0aff0716e65fe04698df41e2c
       tags:
-      - v0.1.14
+      - v0.1.15
     path: .
   path: helm/policy-meta-operator/templates/crds
 kind: LockConfig
