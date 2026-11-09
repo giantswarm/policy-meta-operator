@@ -257,7 +257,7 @@ require (
 	golang.org/x/mod v0.42.0 // indirect
 	golang.org/x/net v0.62.0 // indirect
 	golang.org/x/oauth2 v0.37.0 // indirect
-	golang.org/x/sync v0.24.0 // indirect
+	golang.org/x/sync v0.25.0 // indirect
 	golang.org/x/sys v0.49.0 // indirect
 	golang.org/x/term v0.47.0 // indirect
 	golang.org/x/text v0.43.0 // indirect
@@ -337,7 +337,7 @@ replace go.opentelemetry.io/otel/exporters/otlp/otlpmetric/otlpmetrichttp => go.
 
 replace go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracehttp => go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracehttp v1.46.0
 
-replace golang.org/x/text => golang.org/x/text v0.43.0
+replace golang.org/x/text => golang.org/x/text v0.44.0
 
 replace oras.land/oras-go/v2 => oras.land/oras-go/v2 v2.6.2
 
