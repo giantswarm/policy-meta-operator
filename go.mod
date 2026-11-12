@@ -315,7 +315,7 @@ replace github.com/go-git/go-git/v5 => github.com/go-git/go-git/v5 v5.19.3
 
 replace github.com/jackc/pgx/v5 => github.com/jackc/pgx/v5 v5.12.0
 
-replace github.com/klauspost/compress => github.com/klauspost/compress v1.20.3
+replace github.com/klauspost/compress => github.com/klauspost/compress v1.20.4
 
 replace github.com/sigstore/cosign/v2 => github.com/sigstore/cosign/v2 v2.6.5
 
