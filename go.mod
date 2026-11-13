@@ -329,7 +329,7 @@ replace github.com/ulikunitz/xz => github.com/ulikunitz/xz v0.5.17
 
 replace github.com/yuin/goldmark/v2 => github.com/yuin/goldmark/v2 v2.1.16
 
-replace go.mongodb.org/mongo-driver => go.mongodb.org/mongo-driver v1.17.10
+replace go.mongodb.org/mongo-driver/v2 => go.mongodb.org/mongo-driver/v2 v2.10.0
 
 replace go.opentelemetry.io/otel => go.opentelemetry.io/otel v1.46.0
 
