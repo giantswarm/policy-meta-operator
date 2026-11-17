@@ -313,7 +313,7 @@ replace github.com/go-git/go-billy/v5 => github.com/go-git/go-billy/v5 v5.9.2
 
 replace github.com/go-git/go-git/v5 => github.com/go-git/go-git/v5 v5.19.3
 
-replace github.com/jackc/pgx/v5 => github.com/jackc/pgx/v5 v5.12.0
+replace github.com/jackc/pgx/v5 => github.com/jackc/pgx/v5 v5.13.0
 
 replace github.com/klauspost/compress => github.com/klauspost/compress v1.20.4
 
