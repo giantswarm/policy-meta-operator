@@ -20,5 +20,15 @@ kubectl -n "$namespace" exec deployment/edgedb -- cat /var/lib/gel/data/edbtlsce
 kubectl -n "$namespace" create secret generic edgedb-tls --from-file=ca.crt="$here/edgedb-ca.crt"
 rm -f "$here/edgedb-ca.crt"
 
+# app-test-suite pre-applies its own copy of these CRDs, which Helm refuses to
+# adopt. The chart ships them, so remove the copies and install the chart's own.
+# Keep this list in sync with helm/policy-meta-operator/templates/crds.
+kubectl delete crd --ignore-not-found \
+  automatedexceptions.policy.giantswarm.io \
+  policies.policy.giantswarm.io \
+  policyconfigs.policy.giantswarm.io \
+  policyexceptions.policy.giantswarm.io \
+  policymanifests.policy.giantswarm.io
+
 helm upgrade --install policy-meta-operator "$ATS_CHART_PATH" \
   --namespace "$namespace" --wait --timeout 10m
