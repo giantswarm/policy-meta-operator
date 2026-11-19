@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Update `golang.org/x/net` to v0.61.0 to fix CVE-2026-78659, CVE-2026-78660, CVE-2026-78669, CVE-2026-97032 and CVE-2026-78663.
 - Pass the signal handler context to the PolicyManifest routine so it stops when the manager shuts down.
 - Update `go.opentelemetry.io/otel` to v1.47.0 to fix CVE-2026-128086.
+- Update `github.com/giantswarm/policy-api` to v0.1.21 to match the vendored CRDs, `sigs.k8s.io/controller-runtime` to v0.25.3, `golang.org/x/crypto` to v0.59.0 (security), `golang.org/x/text` to v0.44.0, and the `sigstore/rekor`, `sigstore/timestamp-authority/v2` and `oras-go/v2` pins.
 
 ### Removed
 

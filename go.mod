@@ -4,7 +4,7 @@ go 1.27.3
 
 require (
 	github.com/edgedb/edgedb-go v0.17.2
-	github.com/giantswarm/policy-api v0.0.12
+	github.com/giantswarm/policy-api v0.1.21
 	github.com/go-logr/logr v1.4.4
 	github.com/google/uuid v1.6.0
 	github.com/kyverno/kyverno v1.19.2
@@ -13,7 +13,7 @@ require (
 	github.com/pingcap/errors v0.11.4
 	k8s.io/apimachinery v0.37.2
 	k8s.io/client-go v0.37.2
-	sigs.k8s.io/controller-runtime v0.25.2
+	sigs.k8s.io/controller-runtime v0.25.3
 	sigs.k8s.io/yaml v1.6.0
 )
 
@@ -39,7 +39,7 @@ require (
 	github.com/Azure/go-autorest/tracing v0.6.0 // indirect
 	github.com/Masterminds/semver/v3 v3.4.0 // indirect
 	github.com/Microsoft/go-winio v0.6.2 // indirect
-	github.com/ProtonMail/go-crypto v1.4.1 // indirect
+	github.com/ProtonMail/go-crypto v1.5.2 // indirect
 	github.com/ThalesIgnite/crypto11 v1.2.5 // indirect
 	github.com/agnivade/levenshtein v1.2.1 // indirect
 	github.com/alibabacloud-go/alibabacloud-gateway-spi v0.0.5 // indirect
@@ -115,8 +115,8 @@ require (
 	github.com/go-openapi/jsonpointer v1.0.2 // indirect
 	github.com/go-openapi/jsonreference v1.0.3 // indirect
 	github.com/go-openapi/loads v0.25.3 // indirect
-	github.com/go-openapi/runtime v0.33.3 // indirect
-	github.com/go-openapi/runtime/server-middleware v0.33.3 // indirect
+	github.com/go-openapi/runtime v0.33.4 // indirect
+	github.com/go-openapi/runtime/server-middleware v0.33.4 // indirect
 	github.com/go-openapi/spec v1.0.1 // indirect
 	github.com/go-openapi/strfmt v0.27.4 // indirect
 	github.com/go-openapi/swag v0.29.2 // indirect
@@ -254,15 +254,15 @@ require (
 	go.uber.org/zap v1.28.0 // indirect
 	go.yaml.in/yaml/v2 v2.4.4 // indirect
 	go.yaml.in/yaml/v3 v3.0.6 // indirect
-	golang.org/x/crypto v0.58.0 // indirect
+	golang.org/x/crypto v0.59.0 // indirect
 	golang.org/x/exp v0.0.0-20261014143641-f0251eb4aa3e // indirect
-	golang.org/x/mod v0.42.0 // indirect
+	golang.org/x/mod v0.43.0 // indirect
 	golang.org/x/net v0.62.0 // indirect
 	golang.org/x/oauth2 v0.37.0 // indirect
-	golang.org/x/sync v0.24.0 // indirect
-	golang.org/x/sys v0.49.0 // indirect
-	golang.org/x/term v0.47.0 // indirect
-	golang.org/x/text v0.43.0 // indirect
+	golang.org/x/sync v0.25.0 // indirect
+	golang.org/x/sys v0.50.0 // indirect
+	golang.org/x/term v0.48.0 // indirect
+	golang.org/x/text v0.44.0 // indirect
 	golang.org/x/time v0.16.0 // indirect
 	golang.org/x/tools v0.52.0 // indirect
 	gomodules.xyz/jsonpatch/v2 v2.5.0 // indirect
@@ -321,11 +321,11 @@ replace github.com/klauspost/compress => github.com/klauspost/compress v1.20.4
 
 replace github.com/sigstore/cosign/v2 => github.com/sigstore/cosign/v2 v2.6.5
 
-replace github.com/sigstore/rekor => github.com/sigstore/rekor v1.5.5
+replace github.com/sigstore/rekor => github.com/sigstore/rekor v1.6.2
 
 replace github.com/sigstore/sigstore-go => github.com/sigstore/sigstore-go v1.4.0
 
-replace github.com/sigstore/timestamp-authority/v2 => github.com/sigstore/timestamp-authority/v2 v2.2.0
+replace github.com/sigstore/timestamp-authority/v2 => github.com/sigstore/timestamp-authority/v2 v2.2.1
 
 replace github.com/ulikunitz/xz => github.com/ulikunitz/xz v0.5.17
 
@@ -339,9 +339,9 @@ replace go.opentelemetry.io/otel/exporters/otlp/otlpmetric/otlpmetrichttp => go.
 
 replace go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracehttp => go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracehttp v1.47.0
 
-replace golang.org/x/text => golang.org/x/text v0.43.0
+replace golang.org/x/text => golang.org/x/text v0.44.0
 
-replace oras.land/oras-go/v2 => oras.land/oras-go/v2 v2.6.2
+replace oras.land/oras-go/v2 => oras.land/oras-go/v2 v2.7.0
 
 replace go.etcd.io/etcd/v3 v3.6.8 => go.etcd.io/etcd/v3 v3.7.1
 
