@@ -19,6 +19,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Update the `github.com/containerd/containerd/v2` security pin to v2.3.3.
 - Update `golang.org/x/net` to v0.61.0 to fix CVE-2026-78659, CVE-2026-78660, CVE-2026-78669, CVE-2026-97032 and CVE-2026-78663.
 - Pass the signal handler context to the PolicyManifest routine so it stops when the manager shuts down.
+- Update `go.opentelemetry.io/otel` to v1.47.0 to fix CVE-2026-128086.
+- Update `github.com/giantswarm/policy-api` to v0.1.21 to match the vendored CRDs, `sigs.k8s.io/controller-runtime` to v0.25.3, `golang.org/x/crypto` to v0.59.0 (security), `golang.org/x/text` to v0.44.0, and the `sigstore/rekor`, `sigstore/timestamp-authority/v2` and `oras-go/v2` pins.
 
 ### Removed
 
@@ -28,6 +30,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Run the chart tests against a Gel (EdgeDB) server: an app-test-suite pre-hook deploys one, creates the `edgedb-server-password` and `edgedb-tls` secrets and installs the chart, which cannot start without them. Drop `smoke-tests-cluster-type` from `.ats/main.yaml`, which app-test-suite 1.x rejects.
 - Replace the deprecated Kyverno `AddToScheme` and controller-runtime `Requeue` calls, and regenerate `values.schema.json`, so `pre-commit` passes again.
+- Delete the `policy.giantswarm.io` CRDs app-test-suite pre-applies before the chart tests install the chart, which cannot adopt them.
 - Decode the ClusterPolicy test fixture with `sigs.k8s.io/yaml` instead of `gopkg.in/yaml.v3`, so Kyverno's `json`-tagged API fields are populated and the `extractTargetKinds` and `shouldExcludeGiantSwarmResources` specs pass again.
 
 ## [0.0.4] - 2026-01-27
