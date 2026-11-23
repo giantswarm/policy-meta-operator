@@ -322,7 +322,7 @@ replace github.com/klauspost/compress => github.com/klauspost/compress v1.20.5
 
 replace github.com/sigstore/cosign/v2 => github.com/sigstore/cosign/v2 v2.6.5
 
-replace github.com/sigstore/rekor => github.com/sigstore/rekor v1.6.3
+replace github.com/sigstore/rekor => github.com/sigstore/rekor v1.6.5
 
 replace github.com/sigstore/sigstore-go => github.com/sigstore/sigstore-go v1.4.0
 
