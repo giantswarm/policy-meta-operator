@@ -672,8 +672,8 @@ github.com/sigstore/sigstore/pkg/signature/kms/gcp v1.11.3 h1:iQIKU325HEPNTRfQV/
 github.com/sigstore/sigstore/pkg/signature/kms/gcp v1.11.3/go.mod h1:+EUAZPCvhgkxpf/1aLabRzrvv/I3JjUPwF+ZpcF8Cmo=
 github.com/sigstore/sigstore/pkg/signature/kms/hashivault v1.11.3 h1:6gJxQZZ+LulDWBD5Cdk/i8bKKtTS2NDsmIdjZudWW3k=
 github.com/sigstore/sigstore/pkg/signature/kms/hashivault v1.11.3/go.mod h1:pyX09Xu5qJ1+4S31v+g38yYN0XlA4WJGmD+El8bav40=
-github.com/sigstore/timestamp-authority/v2 v2.2.1 h1:G3hl1xvzIY2wH9EFn0B7rjsDYr8Y37t9PzwkpmK0Koo=
-github.com/sigstore/timestamp-authority/v2 v2.2.1/go.mod h1:bSqT8/DTnFdt++dPuLbadJCHzMPrGkyxvulr+Q5ThHM=
+github.com/sigstore/timestamp-authority/v2 v2.2.2 h1:2AC3RP3Z+0iR2m7m/pJ41WxPDS4nqWoOdEEBuWYLpG8=
+github.com/sigstore/timestamp-authority/v2 v2.2.2/go.mod h1:EkruE/pGuiQX5Jm/FRXneWGO1p0HUJM1MdkqIknG81A=
 github.com/sigurn/crc16 v0.0.0-20240131213347-83fcde1e29d1 h1:NVK+OqnavpyFmUiKfUMHrpvbCi2VFoWTrcpI7aDaJ2I=
 github.com/sigurn/crc16 v0.0.0-20240131213347-83fcde1e29d1/go.mod h1:9/etS5gpQq9BJsJMWg1wpLbfuSnkm8dPF6FdW2JXVhA=
 github.com/sirupsen/logrus v1.10.2 h1:G2SED73/qrAu6YwbdxOD6peLkCBI3z7L+ykJFTXJBBo=
