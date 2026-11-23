@@ -20,7 +20,7 @@ require (
 require (
 	buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go v1.36.11-20260415201107-50325440f8f2.1 // indirect
 	cel.dev/expr v0.25.3 // indirect
-	cloud.google.com/go/auth v0.24.1-0.20261001053825-dbc26066f70a // indirect
+	cloud.google.com/go/auth v0.24.1 // indirect
 	cloud.google.com/go/auth/oauth2adapt v0.3.1 // indirect
 	cloud.google.com/go/compute/metadata v0.10.0 // indirect
 	connectrpc.com/connect v1.20.0 // indirect
@@ -208,13 +208,13 @@ require (
 	github.com/segmentio/asm v1.2.1 // indirect
 	github.com/shibumi/go-pathspec v1.3.0 // indirect
 	github.com/sigstore/cosign/v3 v3.1.2 // indirect
-	github.com/sigstore/fulcio v1.9.0 // indirect
+	github.com/sigstore/fulcio v1.9.1 // indirect
 	github.com/sigstore/k8s-manifest-sigstore v0.5.5-0.20251214123302-4152ec03ed3d // indirect
-	github.com/sigstore/protobuf-specs v0.5.2 // indirect
-	github.com/sigstore/rekor v1.5.5 // indirect
-	github.com/sigstore/rekor-tiles/v2 v2.4.0 // indirect
+	github.com/sigstore/protobuf-specs v0.5.3-0.20261112181914-a84bc5ff572a // indirect
+	github.com/sigstore/rekor v1.6.1 // indirect
+	github.com/sigstore/rekor-tiles/v2 v2.4.2 // indirect
 	github.com/sigstore/sigstore v1.11.4 // indirect
-	github.com/sigstore/sigstore-go v1.3.0 // indirect
+	github.com/sigstore/sigstore-go v1.4.0 // indirect
 	github.com/sigstore/timestamp-authority/v2 v2.2.0 // indirect
 	github.com/sigurn/crc16 v0.0.0-20240131213347-83fcde1e29d1 // indirect
 	github.com/sirupsen/logrus v1.10.2 // indirect
@@ -324,7 +324,7 @@ replace github.com/sigstore/cosign/v2 => github.com/sigstore/cosign/v2 v2.6.5
 
 replace github.com/sigstore/rekor => github.com/sigstore/rekor v1.6.5
 
-replace github.com/sigstore/sigstore-go => github.com/sigstore/sigstore-go v1.4.0
+replace github.com/sigstore/sigstore-go => github.com/sigstore/sigstore-go v1.4.1
 
 replace github.com/sigstore/timestamp-authority/v2 => github.com/sigstore/timestamp-authority/v2 v2.2.1
 
