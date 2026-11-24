@@ -3,6 +3,15 @@
     "type": "object",
     "additionalProperties": false,
     "properties": {
+        "architecture": {
+            "type": "string",
+            "description": "CPU architecture of nodes to schedule on; empty means any.",
+            "enum": [
+                "",
+                "amd64",
+                "arm64"
+            ]
+        },
         "baseDomain": {
             "type": "string"
         },
@@ -160,6 +169,11 @@
         "name": {
             "type": "string"
         },
+        "nodeSelector": {
+            "type": "object",
+            "description": "Node selector for pod scheduling. Merged with `architecture`.",
+            "additionalProperties": true
+        },
         "podSecurityContext": {
             "type": "object",
             "additionalProperties": false,
@@ -222,6 +236,10 @@
         },
         "subscriptionID": {
             "type": "string"
+        },
+        "tolerations": {
+            "type": "array",
+            "description": "Tolerations for pod scheduling"
         }
     }
 }
