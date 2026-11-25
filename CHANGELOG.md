@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Add `io.giantswarm.application.audience` and `io.giantswarm.application.managed` chart annotations for Backstage visibility.
+- Add `architecture`, `nodeSelector` and `tolerations` values so policy-meta-operator can run on arm64 node pools.
 
 ### Changed
 

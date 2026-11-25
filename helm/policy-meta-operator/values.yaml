@@ -5,6 +5,16 @@ global:
   image:
     registry: "gsoci.azurecr.io"
 
+# @schema enum:["", amd64, arm64]
+# -- CPU architecture of nodes to schedule on; empty means any.
+architecture: ""
+
+# -- Node selector for pod scheduling. Merged with `architecture`.
+nodeSelector: {}  # @schema additionalProperties: true
+
+# -- Tolerations for pod scheduling
+tolerations: []
+
 # Pod securityContext
 podSecurityContext:
   runAsUser: 1000
